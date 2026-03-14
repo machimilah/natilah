@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-const HERO_IMAGE = 'https://static.prod-images.emergentagent.com/jobs/cbd6418e-105e-483f-8bd8-8bc1b126ea81/images/3039ab11869c11b4800851bc9bf3f8ca15f23078047bfae581107e2ed9407071.png';
+const HERO_VIDEO = 'https://customer-assets.emergentagent.com/job_cbd6418e-105e-483f-8bd8-8bc1b126ea81/artifacts/cwe5wtg1_vecteezy_futuristic-data-center-server-room-corridor-walkthrough_72949348.mp4';
 
 const HeroSection = ({ data, bannerVisible }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -17,17 +17,17 @@ const HeroSection = ({ data, bannerVisible }) => {
       id="home"
       className="relative w-full min-h-screen flex items-center overflow-hidden"
     >
-      {/* Background Image with Ken Burns animation */}
+      {/* Background Video */}
       <div className="absolute inset-0">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `url(${HERO_IMAGE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            animation: 'kenBurns 25s ease-in-out infinite alternate',
-          }}
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src={HERO_VIDEO} type="video/mp4" />
+        </video>
 
         {/* Gradient overlay */}
         <div
@@ -40,18 +40,6 @@ const HeroSection = ({ data, bannerVisible }) => {
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-black/35" />
       </div>
-
-      {/* Ken Burns CSS Animation */}
-      <style>{`
-        @keyframes kenBurns {
-          0% {
-            transform: scale(1) translateX(0);
-          }
-          100% {
-            transform: scale(1.12) translateX(-2%);
-          }
-        }
-      `}</style>
 
       {/* Content */}
       <div
