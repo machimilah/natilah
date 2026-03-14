@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const BANNER_HEIGHT = 44;
 
-const Navbar = ({ links, bannerVisible }) => {
+const Navbar = ({ links, bannerVisible, isHome }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,25 +17,18 @@ const Navbar = ({ links, bannerVisible }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const topOffset = bannerVisible ? BANNER_HEIGHT : 0;
-
-  const scrollToSection = (e, href) => {
-    e.preventDefault();
-    if (href === '#home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const el = document.querySelector(href);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+  useEffect(() => {
     setIsMobileMenuOpen(false);
-  };
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const topOffset = bannerVisible ? BANNER_HEIGHT : 0;
+  const showDarkBg = isScrolled || !isHome;
 
   return (
     <nav
       className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
-        isScrolled
+        showDarkBg
           ? 'bg-[#0f0f10]/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
@@ -42,26 +37,34 @@ const Navbar = ({ links, bannerVisible }) => {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => scrollToSection(e, '#home')}
+          <Link
+            to="/"
             className="text-white text-2xl font-semibold tracking-tight hover:opacity-80 transition-opacity duration-300"
           >
             <span className="text-emerald-400 mr-1 font-bold">N</span>atilah
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">
             {links.map((link, index) => (
               <React.Fragment key={link.label}>
-                <a
-                  href={link.href}
-                  onClick={(e) => scrollToSection(e, link.href)}
-                  className="text-white/90 hover:text-white text-[15px] font-light tracking-wide transition-colors duration-300 relative group"
+                <Link
+                  to={link.href}
+                  className={`text-[15px] font-light tracking-wide transition-colors duration-300 relative group ${
+                    location.pathname === link.href
+                      ? 'text-white'
+                      : 'text-white/70 hover:text-white'
+                  }`}
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
-                </a>
+                  <span
+                    className={`absolute -bottom-1 left-0 h-[1px] bg-white transition-all duration-300 ${
+                      location.pathname === link.href
+                        ? 'w-full'
+                        : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </Link>
                 {index < links.length - 1 && (
                   <span className="text-white/30 mx-5 text-sm font-light">/</span>
                 )}
@@ -88,14 +91,17 @@ const Navbar = ({ links, bannerVisible }) => {
       >
         <div className="px-6 py-6 space-y-4">
           {links.map((link) => (
-            <a
+            <Link
               key={link.label}
-              href={link.href}
-              onClick={(e) => scrollToSection(e, link.href)}
-              className="block text-white/80 hover:text-white text-lg font-light transition-colors duration-300"
+              to={link.href}
+              className={`block text-lg font-light transition-colors duration-300 ${
+                location.pathname === link.href
+                  ? 'text-white'
+                  : 'text-white/60 hover:text-white'
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>

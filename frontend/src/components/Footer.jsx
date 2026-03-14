@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Linkedin, Youtube } from 'lucide-react';
 
 const XIcon = () => (
@@ -14,109 +15,55 @@ const Footer = ({ data }) => {
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Left: Logo + Copyright */}
           <div className="lg:w-5/12">
-            <a
-              href="#home"
+            <Link
+              to="/"
               className="text-white text-2xl font-semibold tracking-tight inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
             >
               <span className="text-emerald-400 mr-1 font-bold">N</span>atilah
-            </a>
+            </Link>
             <p className="text-white/40 text-sm font-light mb-3">
               &copy; 2025 Natilah. All rights reserved.
             </p>
             <div className="flex items-center gap-2 text-white/40 text-sm font-light mb-8">
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Terms
-              </a>
+              <a href="#" className="hover:text-white transition-colors duration-300">Terms</a>
               <span>/</span>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Privacy Policy
-              </a>
+              <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
             </div>
             <div className="flex items-center gap-4">
-              <a
-                href="#"
-                className="text-white/40 hover:text-white transition-colors duration-300"
-                aria-label="X (Twitter)"
-              >
-                <XIcon />
-              </a>
-              <a
-                href="#"
-                className="text-white/40 hover:text-white transition-colors duration-300"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="#"
-                className="text-white/40 hover:text-white transition-colors duration-300"
-                aria-label="YouTube"
-              >
-                <Youtube size={18} />
-              </a>
+              <a href="#" className="text-white/40 hover:text-white transition-colors duration-300" aria-label="X (Twitter)"><XIcon /></a>
+              <a href="#" className="text-white/40 hover:text-white transition-colors duration-300" aria-label="LinkedIn"><Linkedin size={18} /></a>
+              <a href="#" className="text-white/40 hover:text-white transition-colors duration-300" aria-label="YouTube"><Youtube size={18} /></a>
             </div>
           </div>
 
           {/* Right: Link Columns */}
           <div className="lg:w-7/12 grid grid-cols-2 md:grid-cols-3 gap-10">
-            {/* Global Facilities */}
             <div>
-              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">
-                Global Facilities
-              </h4>
+              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">Global Facilities</h4>
               <ul className="space-y-3">
                 {data.globalFacilities.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300"
-                    >
-                      {item.label}
-                    </a>
+                    <Link to={item.href} className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300">{item.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* News */}
             <div>
-              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">
-                News
-              </h4>
+              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">News</h4>
               <ul className="space-y-3">
                 {data.news.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300"
-                    >
-                      {item.label}
-                    </a>
+                    <Link to={item.href} className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300">{item.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Company */}
             <div>
-              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">
-                Company
-              </h4>
+              <h4 className="text-white/30 text-xs font-light tracking-widest uppercase mb-5">Company</h4>
               <ul className="space-y-3">
                 {data.company.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300"
-                    >
-                      {item.label}
-                    </a>
+                    <Link to={item.href} className="text-white/70 text-sm font-light hover:text-white transition-colors duration-300">{item.label}</Link>
                   </li>
                 ))}
               </ul>

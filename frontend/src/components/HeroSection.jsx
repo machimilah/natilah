@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
 const HeroSection = ({ data, bannerVisible }) => {
@@ -8,14 +9,6 @@ const HeroSection = ({ data, bannerVisible }) => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  const scrollToSection = (e) => {
-    e.preventDefault();
-    const el = document.querySelector(data.ctaLink);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section
@@ -66,9 +59,8 @@ const HeroSection = ({ data, bannerVisible }) => {
           >
             {data.description}
           </p>
-          <a
-            href={data.ctaLink}
-            onClick={scrollToSection}
+          <Link
+            to={data.ctaLink}
             className={`inline-flex items-center gap-2 px-8 py-3.5 border border-white/80 rounded-full text-white text-sm font-light tracking-wide hover:bg-white hover:text-gray-900 transition-all duration-500 group ${
               isLoaded
                 ? 'opacity-100 translate-y-0'
@@ -81,7 +73,7 @@ const HeroSection = ({ data, bannerVisible }) => {
               size={16}
               className="group-hover:translate-x-1 transition-transform duration-300"
             />
-          </a>
+          </Link>
         </div>
       </div>
 
