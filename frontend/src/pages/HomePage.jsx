@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import MissionSection from '../components/MissionSection';
+import QuantumBackground from '../components/QuantumBackground';
 import { heroData, missionData, approachData, infrastructureData, newsData } from '../data/mockData';
 
 const HomePage = () => {
@@ -14,8 +15,15 @@ const HomePage = () => {
       <MissionSection data={missionData} />
 
       {/* Approach Preview */}
-      <section className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground
+          particleCount={30}
+          connectDistance={130}
+          speed={0.25}
+          opacity={0.07}
+          colorScheme="green"
+        />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
           <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Our approach</p>
           <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light text-white leading-[1.2] tracking-tight mb-16 max-w-2xl">
             Four pillars of intelligent scheduling
@@ -25,7 +33,7 @@ const HomePage = () => {
               <Link
                 to="/technology"
                 key={item.id}
-                className="group p-6 rounded-xl border border-white/[0.06] hover:border-white/[0.15] transition-all duration-500 hover:-translate-y-1"
+                className="group p-6 rounded-xl border border-white/[0.06] hover:border-white/[0.15] bg-white/[0.01] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1"
               >
                 <span className="text-white/20 text-xs font-mono mb-4 block">
                   {String(index + 1).padStart(2, '0')}
@@ -47,8 +55,15 @@ const HomePage = () => {
       </section>
 
       {/* Infrastructure Preview */}
-      <section className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden">
+        <QuantumBackground
+          particleCount={20}
+          connectDistance={100}
+          speed={0.15}
+          opacity={0.05}
+          colorScheme="purple"
+        />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
           <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light text-white leading-[1.2] tracking-tight mb-6 max-w-3xl">
             {infrastructureData.heading}
           </h2>
@@ -79,8 +94,15 @@ const HomePage = () => {
       </section>
 
       {/* News Preview */}
-      <section className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground
+          particleCount={15}
+          connectDistance={110}
+          speed={0.2}
+          opacity={0.05}
+          colorScheme="cyan"
+        />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light text-white leading-[1.2] tracking-tight">
               Latest news

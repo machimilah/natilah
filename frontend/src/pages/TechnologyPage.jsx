@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import QuantumBackground from '../components/QuantumBackground';
 import { approachData, scalingData } from '../data/mockData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
@@ -40,7 +41,8 @@ const TechnologyPage = () => {
       />
 
       {/* Approach Slider */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={30} connectDistance={140} speed={0.25} opacity={0.07} colorScheme="green" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-16">Our approach</p>
@@ -114,7 +116,8 @@ const TechnologyPage = () => {
       </section>
 
       {/* Scaling Section */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+        <QuantumBackground particleCount={20} connectDistance={120} speed={0.2} opacity={0.05} colorScheme="purple" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             <div className="lg:w-5/12">

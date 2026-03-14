@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FileText, ExternalLink } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import QuantumBackground from '../components/QuantumBackground';
 import { researchPageData, scalingData } from '../data/mockData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
@@ -34,7 +35,8 @@ const ResearchPage = () => {
       />
 
       {/* Research Papers */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={25} connectDistance={130} speed={0.2} opacity={0.06} colorScheme="cyan" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Publications</p>
@@ -90,7 +92,8 @@ const ResearchPage = () => {
       </section>
 
       {/* Scaling Methodology */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+        <QuantumBackground particleCount={18} connectDistance={100} speed={0.15} opacity={0.05} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Methodology</p>

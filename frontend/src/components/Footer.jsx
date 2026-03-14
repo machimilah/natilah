@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Linkedin, Youtube } from 'lucide-react';
+import QuantumBackground from './QuantumBackground';
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -10,8 +11,9 @@ const XIcon = () => (
 
 const Footer = ({ data }) => {
   return (
-    <footer className="bg-[#0f0f10] pt-20 pb-16 border-t border-white/[0.06]">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <footer className="relative bg-[#0f0f10] pt-20 pb-16 border-t border-white/[0.06] overflow-hidden">
+      <QuantumBackground particleCount={12} connectDistance={100} speed={0.1} opacity={0.04} colorScheme="green" />
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Left: Logo + Copyright */}
           <div className="lg:w-5/12">

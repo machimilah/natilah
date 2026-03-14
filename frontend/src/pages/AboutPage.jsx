@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import QuantumBackground from '../components/QuantumBackground';
 import { aboutPageData, missionData } from '../data/mockData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
@@ -36,7 +37,8 @@ const AboutPage = () => {
       />
 
       {/* Mission */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={20} connectDistance={120} speed={0.15} opacity={0.06} colorScheme="green" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <h2 className="text-3xl md:text-4xl lg:text-[48px] font-light text-white leading-[1.15] tracking-tight mb-12 max-w-4xl">
@@ -62,7 +64,8 @@ const AboutPage = () => {
       </section>
 
       {/* Our Story */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+        <QuantumBackground particleCount={15} connectDistance={100} speed={0.2} opacity={0.05} colorScheme="purple" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <h2 className="text-3xl md:text-4xl lg:text-[48px] font-light text-white leading-[1.15] tracking-tight mb-12 max-w-4xl">
@@ -88,7 +91,8 @@ const AboutPage = () => {
       </section>
 
       {/* Values */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={18} connectDistance={110} speed={0.18} opacity={0.05} colorScheme="cyan" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Our values</p>
@@ -109,7 +113,8 @@ const AboutPage = () => {
       </section>
 
       {/* Leadership */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+        <QuantumBackground particleCount={15} connectDistance={100} speed={0.15} opacity={0.04} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Leadership</p>

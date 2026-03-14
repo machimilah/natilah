@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import QuantumBackground from '../components/QuantumBackground';
 import { newsData } from '../data/mockData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
@@ -36,7 +37,8 @@ const NewsPage = () => {
       />
 
       {/* News Listing */}
-      <section className="bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06]">
+      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={20} connectDistance={120} speed={0.18} opacity={0.05} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="space-y-0">
             {newsData.map((item, index) => (
