@@ -15,15 +15,23 @@ const HeroSection = ({ data, bannerVisible }) => {
       id="home"
       className="relative w-full min-h-screen flex items-center overflow-hidden"
     >
-      {/* Background Image with Gradient Overlay */}
+      {/* Background Video */}
       <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1614508569207-3295ac89d75f?auto=format&fit=crop&w=1920&q=80"
-          alt="Datacenter background"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1614508569207-3295ac89d75f?auto=format&fit=crop&w=1920&q=80"
           className="w-full h-full object-cover"
-          loading="eager"
-        />
-        {/* Colorful gradient overlay similar to PsiQuantum */}
+        >
+          <source
+            src="https://videos.pexels.com/video-files/5028622/5028622-hd_1920_1080_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+
+        {/* Colorful gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -32,7 +40,7 @@ const HeroSection = ({ data, bannerVisible }) => {
           }}
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/25" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Content */}
