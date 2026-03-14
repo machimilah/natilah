@@ -22,11 +22,11 @@ const HeroSection = ({ data, bannerVisible }) => {
           muted
           loop
           playsInline
-          poster="https://images.unsplash.com/photo-1614508569207-3295ac89d75f?auto=format&fit=crop&w=1920&q=80"
+          poster="https://images.pexels.com/videos/28610560/pexels-photo-28610560.jpeg?auto=compress&cs=tinysrgb&w=1920"
           className="w-full h-full object-cover"
         >
           <source
-            src="https://videos.pexels.com/video-files/5028622/5028622-hd_1920_1080_25fps.mp4"
+            src="https://videos.pexels.com/video-files/28610560/12432621_1920_1080_30fps.mp4"
             type="video/mp4"
           />
         </video>
