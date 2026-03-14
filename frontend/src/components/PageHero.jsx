@@ -13,7 +13,7 @@ const PageHero = ({ heading, description }) => {
     <section className="relative bg-[#0f0f10] pt-40 pb-20 md:pt-48 md:pb-28 overflow-hidden quantum-grid">
       {/* Canvas particle background */}
       <QuantumBackground
-        particleCount={25}
+        particleCount={10}
         connectDistance={120}
         speed={0.2}
         opacity={0.12}

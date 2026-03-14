@@ -29,7 +29,7 @@ const MissionSection = ({ data }) => {
       className="relative bg-[#0f0f10] py-28 md:py-40 overflow-hidden quantum-grid"
     >
       <QuantumBackground
-        particleCount={20}
+        particleCount={8}
         connectDistance={140}
         speed={0.15}
         opacity={0.10}

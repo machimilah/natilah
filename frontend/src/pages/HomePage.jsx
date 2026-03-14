@@ -17,7 +17,7 @@ const HomePage = () => {
       {/* Approach Preview */}
       <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden quantum-grid">
         <QuantumBackground
-          particleCount={30}
+          particleCount={12}
           connectDistance={130}
           speed={0.25}
           opacity={0.12}
@@ -57,7 +57,7 @@ const HomePage = () => {
       {/* Infrastructure Preview */}
       <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden">
         <QuantumBackground
-          particleCount={20}
+          particleCount={8}
           connectDistance={100}
           speed={0.15}
           opacity={0.10}
@@ -96,7 +96,7 @@ const HomePage = () => {
       {/* News Preview */}
       <section className="relative bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06] overflow-hidden quantum-grid">
         <QuantumBackground
-          particleCount={15}
+          particleCount={6}
           connectDistance={110}
           speed={0.2}
           opacity={0.10}

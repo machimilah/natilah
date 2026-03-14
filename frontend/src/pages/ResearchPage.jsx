@@ -36,7 +36,7 @@ const ResearchPage = () => {
 
       {/* Research Papers */}
       <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={25} connectDistance={130} speed={0.2} opacity={0.10} colorScheme="cyan" />
+        <QuantumBackground particleCount={10} connectDistance={130} speed={0.2} opacity={0.10} colorScheme="cyan" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Publications</p>
@@ -93,7 +93,7 @@ const ResearchPage = () => {
 
       {/* Scaling Methodology */}
       <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
-        <QuantumBackground particleCount={18} connectDistance={100} speed={0.15} opacity={0.10} colorScheme="mixed" />
+        <QuantumBackground particleCount={8} connectDistance={100} speed={0.15} opacity={0.10} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Methodology</p>
