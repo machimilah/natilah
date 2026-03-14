@@ -36,7 +36,7 @@ const ApplicationsPage = () => {
 
       {/* Use Cases */}
       <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={25} connectDistance={130} speed={0.2} opacity={0.06} colorScheme="green" />
+        <QuantumBackground particleCount={25} connectDistance={130} speed={0.2} opacity={0.20} colorScheme="green" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Industry solutions</p>
@@ -72,7 +72,7 @@ const ApplicationsPage = () => {
 
       {/* Global Infrastructure */}
       <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
-        <QuantumBackground particleCount={20} connectDistance={110} speed={0.18} opacity={0.05} colorScheme="purple" />
+        <QuantumBackground particleCount={20} connectDistance={110} speed={0.18} opacity={0.18} colorScheme="purple" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light text-white leading-[1.2] tracking-tight mb-6 max-w-3xl">

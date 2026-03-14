@@ -32,7 +32,7 @@ const MissionSection = ({ data }) => {
         particleCount={20}
         connectDistance={140}
         speed={0.15}
-        opacity={0.06}
+        opacity={0.20}
         colorScheme="mixed"
       />
 

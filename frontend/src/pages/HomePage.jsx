@@ -20,7 +20,7 @@ const HomePage = () => {
           particleCount={30}
           connectDistance={130}
           speed={0.25}
-          opacity={0.07}
+          opacity={0.22}
           colorScheme="green"
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -60,7 +60,7 @@ const HomePage = () => {
           particleCount={20}
           connectDistance={100}
           speed={0.15}
-          opacity={0.05}
+          opacity={0.18}
           colorScheme="purple"
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -99,7 +99,7 @@ const HomePage = () => {
           particleCount={15}
           connectDistance={110}
           speed={0.2}
-          opacity={0.05}
+          opacity={0.18}
           colorScheme="cyan"
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
