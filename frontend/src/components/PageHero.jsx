@@ -16,7 +16,7 @@ const PageHero = ({ heading, description }) => {
         particleCount={25}
         connectDistance={120}
         speed={0.2}
-        opacity={0.22}
+        opacity={0.12}
         colorScheme="mixed"
       />
 

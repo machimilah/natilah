@@ -38,7 +38,7 @@ const NewsPage = () => {
 
       {/* News Listing */}
       <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={20} connectDistance={120} speed={0.18} opacity={0.18} colorScheme="mixed" />
+        <QuantumBackground particleCount={20} connectDistance={120} speed={0.18} opacity={0.10} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="space-y-0">
             {newsData.map((item, index) => (
