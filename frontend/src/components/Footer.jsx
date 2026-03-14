@@ -19,12 +19,17 @@ const Footer = ({ data }) => {
           <div className="lg:w-5/12">
             <Link
               to="/"
-              className="text-white text-2xl font-semibold tracking-tight inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
+              className="inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
             >
-              <span className="text-emerald-400 mr-1 font-bold">N</span>atilah
+              <img
+                src="/natilah-logo.png"
+                alt="Natilah Technologies"
+                className="h-11 w-auto"
+                style={{ filter: 'invert(1) brightness(1.5)', mixBlendMode: 'lighten' }}
+              />
             </Link>
             <p className="text-white/40 text-sm font-light mb-3">
-              &copy; 2025 Natilah. All rights reserved.
+              &copy; 2025 Natilah Technologies. All rights reserved.
             </p>
             <div className="flex items-center gap-2 text-white/40 text-sm font-light mb-8">
               <a href="#" className="hover:text-white transition-colors duration-300">Terms</a>

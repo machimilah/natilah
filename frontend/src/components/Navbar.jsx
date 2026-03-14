@@ -39,9 +39,14 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-white text-2xl font-semibold tracking-tight hover:opacity-80 transition-opacity duration-300"
+            className="hover:opacity-80 transition-opacity duration-300 flex items-center"
           >
-            <span className="text-emerald-400 mr-1 font-bold">N</span>atilah
+            <img
+              src="/natilah-logo.png"
+              alt="Natilah Technologies"
+              className="h-9 w-auto"
+              style={{ filter: 'invert(1) brightness(1.5)', mixBlendMode: 'lighten' }}
+            />
           </Link>
 
           {/* Desktop Navigation */}
