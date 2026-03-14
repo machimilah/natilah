@@ -42,10 +42,9 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
             className="hover:opacity-80 transition-opacity duration-300 flex items-center"
           >
             <img
-              src="/natilah-logo.png"
+              src="/natilah-logo-white.png"
               alt="Natilah Technologies"
-              className="h-9 w-auto"
-              style={{ filter: 'invert(1) brightness(1.5)', mixBlendMode: 'lighten' }}
+              className="h-12 w-auto"
             />
           </Link>
 

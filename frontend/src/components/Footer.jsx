@@ -22,10 +22,9 @@ const Footer = ({ data }) => {
               className="inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
             >
               <img
-                src="/natilah-logo.png"
+                src="/natilah-logo-white.png"
                 alt="Natilah Technologies"
-                className="h-11 w-auto"
-                style={{ filter: 'invert(1) brightness(1.5)', mixBlendMode: 'lighten' }}
+                className="h-14 w-auto"
               />
             </Link>
             <p className="text-white/40 text-sm font-light mb-3">
