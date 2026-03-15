@@ -13,7 +13,7 @@ const Footer = ({ data }) => {
   return (
     <footer className="relative bg-[#0f0f10] pt-20 pb-16 border-t border-white/[0.06] overflow-hidden">
       <QuantumBackground particleCount={8} connectDistance={120} speed={0.15} opacity={0.08} colorScheme="green" />
-      <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Left: Logo + Copyright */}
           <div className="lg:w-5/12">
@@ -22,9 +22,9 @@ const Footer = ({ data }) => {
               className="inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
             >
               <img
-                src="/natilah_white_transparent.png"
+                src="/natilah-logo-white.png"
                 alt="Natilah Technologies"
-                className="h-20 w-auto"
+                className="h-14 w-auto"
               />
             </Link>
             <p className="text-white/40 text-sm font-light mb-3">

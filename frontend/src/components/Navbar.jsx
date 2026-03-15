@@ -34,7 +34,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
       }`}
       style={{ top: isScrolled ? 0 : topOffset }}
     >
-      <div className="w-full lg:max-w-[40%] lg:mx-auto px-6 md:px-12">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link
@@ -42,9 +42,9 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
             className="hover:opacity-80 transition-opacity duration-300 flex items-center"
           >
             <img
-              src="/natilah_white_transparent.png"
+              src="/natilah-logo-white.png"
               alt="Natilah Technologies"
-              className="h-20 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
@@ -54,7 +54,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
               <React.Fragment key={link.label}>
                 <Link
                   to={link.href}
-                  className={`text-lg font-light tracking-wide transition-colors duration-300 relative group ${
+                  className={`text-[15px] font-light tracking-wide transition-colors duration-300 relative group ${
                     location.pathname === link.href
                       ? 'text-white'
                       : 'text-white/70 hover:text-white'
@@ -70,7 +70,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
                   />
                 </Link>
                 {index < links.length - 1 && (
-                  <span className="text-white/30 mx-5 text-base font-light">/</span>
+                  <span className="text-white/30 mx-5 text-sm font-light">/</span>
                 )}
               </React.Fragment>
             ))}
@@ -98,7 +98,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
             <Link
               key={link.label}
               to={link.href}
-              className={`block text-xl font-light transition-colors duration-300 ${
+              className={`block text-lg font-light transition-colors duration-300 ${
                 location.pathname === link.href
                   ? 'text-white'
                   : 'text-white/60 hover:text-white'
