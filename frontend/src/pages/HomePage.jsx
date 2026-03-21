@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
-import MissionSection from '../components/MissionSection';
 import QuantumBackground from '../components/QuantumBackground';
 import { heroData, missionData, approachData, infrastructureData, newsData } from '../data/mockData';
 
@@ -12,10 +11,7 @@ const HomePage = () => {
   return (
     <>
       <div className="relative">
-        <HeroSection data={heroData} bannerVisible={bannerVisible} />
-        <div className="relative -mt-0 z-20">
-          <MissionSection data={missionData} />
-        </div>
+        <HeroSection data={heroData} missionData={missionData} bannerVisible={bannerVisible} />
       </div>
 
       {/* Approach Preview */}
@@ -30,7 +26,7 @@ const HomePage = () => {
         <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
           <p className="text-white/40 text-base lg:text-lg font-light tracking-widest uppercase mb-8 lg:mb-12">Our approach</p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-[1.2] tracking-tight mb-20 lg:mb-28 max-w-2xl lg:max-w-4xl">
-            Four pillars of intelligent scheduling
+            Four pillars of HQO's scheduling engine
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
             {approachData.map((item, index) => (
