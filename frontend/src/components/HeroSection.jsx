@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -8,11 +8,11 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
   const videoRef = React.useRef(null);
   const nextVideoRef = React.useRef(null);
 
-  const videos = [
+  const videos = useMemo(() => [
     '/videos/hallway.mp4',
     '/videos/vecteezy_modern-industrial-zone-outdoors-large-factory-with-many_55334149.mp4',
     '/videos/vecteezy_a-row-of-servers-in-a-data-center_69464761.mp4',
-  ];
+  ], []);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
@@ -39,7 +39,7 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
     nextVideo.src = videos[preloadIndex];
 
     return () => video.removeEventListener('ended', handleVideoEnd);
-  }, [currentVideoIndex, videos]);
+  }, [currentVideoIndex, videos]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const video = videoRef.current;
@@ -47,7 +47,7 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
       video.src = videos[currentVideoIndex];
       video.play().catch(() => {});
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section id="home" className="relative w-full min-h-screen flex flex-col overflow-hidden">
