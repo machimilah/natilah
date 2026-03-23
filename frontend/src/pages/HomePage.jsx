@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import HeroSection from '../components/HeroSection';
 import QuantumBackground from '../components/QuantumBackground';
 import { heroData, missionData, scalingData } from '../data/mockData';
@@ -12,6 +13,14 @@ const HomePage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Natilah — Quantum-Inspired GPU Datacenter Scheduling</title>
+        <meta name="description" content="Natilah builds Quasar, a quantum-inspired scheduler that achieves 72% win rate against 11 production schedulers. Mean +16.2% makespan reduction, never worse than FIFO." />
+        <meta property="og:title" content="Natilah — Quantum-Inspired GPU Scheduling" />
+        <meta property="og:description" content="Quasar optimizes GPU datacenters with quantum-inspired algorithms. Benchmarked against 11 production schedulers across 132 matchups." />
+        <meta property="og:url" content="https://natilah.com/" />
+        <link rel="canonical" href="https://natilah.com/" />
+      </Helmet>
       <div className="relative">
         <HeroSection data={heroData} missionData={missionData} bannerVisible={bannerVisible} />
       </div>

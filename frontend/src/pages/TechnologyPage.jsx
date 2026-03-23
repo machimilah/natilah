@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
 import { approachData, scalingData } from '../data/mockData';
@@ -35,6 +36,13 @@ const TechnologyPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Technology — Natilah</title>
+        <meta name="description" content="Quasar's QUBO formulation, three-solver pipeline (LNS+SB, Adaptive SA, Simulated Bifurcation), and adaptive windowed scheduling — the science behind 72% win rate against 11 production schedulers." />
+        <meta property="og:title" content="Quasar Technology — Natilah" />
+        <meta property="og:url" content="https://natilah.com/technology" />
+        <link rel="canonical" href="https://natilah.com/technology" />
+      </Helmet>
       <PageHero
         heading="Technology"
         description="Our technology stack is built from the ground up to solve the most complex scheduling challenges at datacenter scale."

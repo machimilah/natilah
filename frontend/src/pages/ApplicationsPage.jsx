@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
 import { applicationsPageData, infrastructureData } from '../data/mockData';
@@ -29,6 +30,13 @@ const FadeInSection = ({ children, delay = 0 }) => {
 const ApplicationsPage = () => {
   return (
     <>
+      <Helmet>
+        <title>Applications — Natilah</title>
+        <meta name="description" content="Quasar transforms GPU scheduling for AI training, multi-tenant clouds, Kubernetes and Slurm. 72% win rate, 26% fewer SLA violations, drop-in deployment with zero downtime." />
+        <meta property="og:title" content="Applications — Natilah" />
+        <meta property="og:url" content="https://natilah.com/applications" />
+        <link rel="canonical" href="https://natilah.com/applications" />
+      </Helmet>
       <PageHero
         heading={applicationsPageData.heroHeading}
         description={applicationsPageData.heroDescription}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FileText, ExternalLink } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
+import { Helmet } from 'react-helmet-async';
 import { researchPageData, scalingData } from '../data/mockData';
 import { useResearchPapers } from '../hooks/useData';
 
@@ -32,6 +33,13 @@ const ResearchPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Research — Natilah</title>
+        <meta name="description" content="Peer-reviewed research on QUBO-based GPU scheduling. Quasar: 72% win rate, +16.2% makespan reduction, multi-objective optimization across 132 matchups vs 11 production schedulers." />
+        <meta property="og:title" content="Research — Natilah" />
+        <meta property="og:url" content="https://natilah.com/research" />
+        <link rel="canonical" href="https://natilah.com/research" />
+      </Helmet>
       <PageHero
         heading={researchPageData.heroHeading}
         description={researchPageData.heroDescription}

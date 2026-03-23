@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
 import { useNews } from '../hooks/useData';
@@ -32,6 +33,13 @@ const NewsPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>News — Natilah</title>
+        <meta name="description" content="Latest updates from Natilah — Quasar v1.0.0 release, datacenter scale predictions, and benchmark results against production GPU schedulers." />
+        <meta property="og:title" content="News — Natilah" />
+        <meta property="og:url" content="https://natilah.com/news" />
+        <link rel="canonical" href="https://natilah.com/news" />
+      </Helmet>
       <PageHero
         heading="News"
         description="The latest updates from Natilah on partnerships, technology, and the future of datacenter scheduling."

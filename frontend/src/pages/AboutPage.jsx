@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
 import { aboutPageData, missionData } from '../data/mockData';
@@ -34,6 +35,13 @@ const AboutPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>About — Natilah</title>
+        <meta name="description" content="Natilah is building the quantum-inspired intelligence layer for GPU datacenter infrastructure. Meet the team behind Quasar." />
+        <meta property="og:title" content="About Natilah" />
+        <meta property="og:url" content="https://natilah.com/about" />
+        <link rel="canonical" href="https://natilah.com/about" />
+      </Helmet>
       <PageHero
         heading={aboutPageData.heroHeading}
         description={aboutPageData.heroDescription}
