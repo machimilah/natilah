@@ -27,8 +27,9 @@ export function useNews() {
   const [loading, setLoading] = useState(!!supabase);
 
   useEffect(() => {
-    if (!supabase) return;
+    if (!supabase) { console.warn('[Supabase] client is null — env vars missing'); return; }
     supabase.from('news').select('*').order('created_at', { ascending: false }).then(({ data: rows, error }) => {
+      console.log('[Supabase] news fetch:', { rows, error });
       if (!error && rows && rows.length > 0) {
         setData(rows.map(r => ({
           id: r.id,
