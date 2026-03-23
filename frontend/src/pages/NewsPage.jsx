@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
-import { newsData } from '../data/mockData';
+import { useNews } from '../hooks/useData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -28,6 +28,7 @@ const FadeInSection = ({ children, delay = 0 }) => {
 
 const NewsPage = () => {
   const [expandedId, setExpandedId] = useState(null);
+  const { data: newsData } = useNews();
 
   return (
     <>
@@ -37,7 +38,7 @@ const NewsPage = () => {
       />
 
       {/* News Listing */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
         <QuantumBackground particleCount={8} connectDistance={120} speed={0.18} opacity={0.10} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="space-y-0">
@@ -57,7 +58,7 @@ const NewsPage = () => {
 
                     {/* Content */}
                     <div className="flex-1">
-                      <h3 className="text-white text-lg md:text-xl font-light mb-4 group-hover:text-emerald-400 transition-colors duration-300">
+                      <h3 className="text-white text-lg md:text-xl font-light mb-4 group-hover:text-gray-300 transition-colors duration-300">
                         {item.title}
                       </h3>
 
@@ -77,7 +78,7 @@ const NewsPage = () => {
                         </p>
                       )}
 
-                      <span className="inline-flex items-center gap-2 text-white text-sm font-light group-hover:text-emerald-400 transition-colors duration-300">
+                      <span className="inline-flex items-center gap-2 text-white text-sm font-light group-hover:text-gray-300 transition-colors duration-300">
                         {expandedId === item.id ? 'Show less' : 'Read More'}
                         <ArrowRight
                           size={14}

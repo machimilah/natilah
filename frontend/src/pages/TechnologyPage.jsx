@@ -41,8 +41,8 @@ const TechnologyPage = () => {
       />
 
       {/* Approach Slider */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={12} connectDistance={140} speed={0.25} opacity={0.12} colorScheme="green" />
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={12} connectDistance={140} speed={0.25} opacity={0.12} colorScheme="white" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-16">Our approach</p>
@@ -101,13 +101,13 @@ const TechnologyPage = () => {
             <span className="text-white/30 text-xs font-light mr-4">Slider Principal</span>
             <button
               onClick={handlePrev}
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
+              className="w-10 h-10  border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
             >
               <ArrowLeft size={16} />
             </button>
             <button
               onClick={handleNext}
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
+              className="w-10 h-10  border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
             >
               <ArrowRight size={16} />
             </button>
@@ -116,7 +116,7 @@ const TechnologyPage = () => {
       </section>
 
       {/* Scaling Section */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
         <QuantumBackground particleCount={8} connectDistance={120} speed={0.2} opacity={0.10} colorScheme="purple" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -145,7 +145,7 @@ const TechnologyPage = () => {
                     >
                       <div className="flex items-center gap-4">
                         <span className="text-white/30 text-xs font-mono">{item.number}</span>
-                        <span className="text-white text-lg md:text-xl font-light group-hover:text-emerald-400 transition-colors duration-300">
+                        <span className="text-white text-lg md:text-xl font-light group-hover:text-gray-300 transition-colors duration-300">
                           {item.title}
                         </span>
                       </div>

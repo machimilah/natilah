@@ -25,7 +25,7 @@ const ScalingSection = ({ data }) => {
     <section
       id="research"
       ref={sectionRef}
-      className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]"
+      className="bg-black py-28 md:py-36 border-t border-white/[0.06]"
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -75,7 +75,7 @@ const ScalingSection = ({ data }) => {
                     <span className="text-white/30 text-xs font-mono">
                       {item.number}
                     </span>
-                    <span className="text-white text-lg md:text-xl font-light group-hover:text-emerald-400 transition-colors duration-300">
+                    <span className="text-white text-lg md:text-xl font-light group-hover:text-gray-300 transition-colors duration-300">
                       {item.title}
                     </span>
                   </div>

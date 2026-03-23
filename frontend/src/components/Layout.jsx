@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
   const isHome = location.pathname === '/';
 
   return (
-    <div className="min-h-screen bg-[#0f0f10]">
+    <div className="min-h-screen bg-black">
       <NewsBanner data={newsBanner} onClose={() => setBannerVisible(false)} />
       <Navbar links={navLinks} bannerVisible={bannerVisible} isHome={isHome} />
       <main>{children}</main>

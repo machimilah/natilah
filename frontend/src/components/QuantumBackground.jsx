@@ -12,16 +12,7 @@ const QuantumBackground = ({
   const animFrameRef = useRef(null);
 
   const getColor = useCallback((index) => {
-    if (colorScheme === 'green') return { r: 16, g: 185, b: 129 };
-    if (colorScheme === 'purple') return { r: 168, g: 85, b: 247 };
-    if (colorScheme === 'cyan') return { r: 34, g: 211, b: 238 };
-    const colors = [
-      { r: 16, g: 185, b: 129 },
-      { r: 168, g: 85, b: 247 },
-      { r: 34, g: 211, b: 238 },
-      { r: 245, g: 158, b: 11 },
-    ];
-    return colors[index % colors.length];
+    return { r: 255, g: 255, b: 255 };
   }, [colorScheme]);
 
   const buildTraces = useCallback((w, h) => {
@@ -61,6 +52,8 @@ const QuantumBackground = ({
       trail: [],
       trailLength: 25 + Math.floor(Math.random() * 30),
       laneChangeTimer: 80 + Math.floor(Math.random() * 200),
+      accelerationTimer: 0,
+      accelerationPhase: 0,
     };
   }, [speed, getColor]);
 
@@ -125,6 +118,20 @@ const QuantumBackground = ({
         p.trail.push({ x: p.x, y: p.y });
         if (p.trail.length > p.trailLength) p.trail.shift();
 
+        // Acceleration phases
+        p.accelerationTimer--;
+        if (p.accelerationTimer <= 0) {
+          // Start new acceleration phase
+          p.accelerationPhase = Math.random() < 0.5 ? 1 : -1; // 1 for acceleration, -1 for deceleration
+          p.accelerationTimer = 30 + Math.floor(Math.random() * 80);
+        }
+
+        // Apply acceleration based on current phase
+        const accelerationAmount = p.accelerationPhase * 0.002;
+        p.vx += accelerationAmount;
+        // Cap the speed to reasonable bounds
+        p.vx = Math.max(speed * 0.3, Math.min(p.vx, speed * 1.5));
+
         // Move — predominantly right
         p.x += p.vx;
         p.y += p.vy;
@@ -160,10 +167,6 @@ const QuantumBackground = ({
 
         // Dampen vertical velocity over time
         p.vy *= 0.97;
-
-        // Restore horizontal speed gradually
-        const targetVx = speed * (0.6 + (i % 5) * 0.1);
-        p.vx += (targetVx - p.vx) * 0.01;
 
         // Respawn when off the right edge
         if (p.x > w + 60) {

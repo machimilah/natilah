@@ -3,6 +3,7 @@ import { FileText, ExternalLink } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
 import { researchPageData, scalingData } from '../data/mockData';
+import { useResearchPapers } from '../hooks/useData';
 
 const FadeInSection = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -27,6 +28,8 @@ const FadeInSection = ({ children, delay = 0 }) => {
 };
 
 const ResearchPage = () => {
+  const { data: papers } = useResearchPapers();
+
   return (
     <>
       <PageHero
@@ -35,7 +38,7 @@ const ResearchPage = () => {
       />
 
       {/* Research Papers */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
         <QuantumBackground particleCount={10} connectDistance={130} speed={0.2} opacity={0.10} colorScheme="cyan" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
@@ -46,17 +49,17 @@ const ResearchPage = () => {
           </FadeInSection>
 
           <div className="space-y-8">
-            {researchPageData.papers.map((paper, index) => (
+            {papers.map((paper, index) => (
               <FadeInSection key={paper.title} delay={(index + 1) * 150}>
-                <article className="group p-8 rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500">
+                <article className="group p-8  border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500">
                   <div className="flex flex-col lg:flex-row gap-6">
                     <div className="lg:w-16 flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg bg-white/[0.04] flex items-center justify-center">
+                      <div className="w-12 h-12  bg-white/[0.04] flex items-center justify-center">
                         <FileText size={20} className="text-white/30" />
                       </div>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-white text-lg font-normal mb-2 group-hover:text-emerald-400 transition-colors duration-300">
+                      <h3 className="text-white text-lg font-normal mb-2 group-hover:text-gray-300 transition-colors duration-300">
                         {paper.title}
                       </h3>
                       <p className="text-white/40 text-sm font-light mb-3">
@@ -69,14 +72,14 @@ const ResearchPage = () => {
                         {paper.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-3 py-1 rounded-full bg-white/[0.04] text-white/50 text-xs font-light"
+                            className="px-3 py-1  bg-white/[0.04] text-white/50 text-xs font-light"
                           >
                             {tag}
                           </span>
                         ))}
                         <a
                           href="#"
-                          className="ml-auto inline-flex items-center gap-1.5 text-white/50 text-sm font-light hover:text-emerald-400 transition-colors duration-300"
+                          className="ml-auto inline-flex items-center gap-1.5 text-white/50 text-sm font-light hover:text-gray-300 transition-colors duration-300"
                         >
                           View paper
                           <ExternalLink size={12} />
@@ -92,7 +95,7 @@ const ResearchPage = () => {
       </section>
 
       {/* Scaling Methodology */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
         <QuantumBackground particleCount={8} connectDistance={100} speed={0.15} opacity={0.10} colorScheme="mixed" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
@@ -108,8 +111,8 @@ const ResearchPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {scalingData.items.map((item, index) => (
               <FadeInSection key={item.id} delay={(index + 1) * 200}>
-                <div className="p-8 rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500">
-                  <span className="text-emerald-400/60 text-xs font-mono mb-4 block">{item.number}</span>
+                <div className="p-8  border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500">
+                  <span className="text-gray-300/60 text-xs font-mono mb-4 block">{item.number}</span>
                   <h3 className="text-white text-xl font-light mb-4">{item.title}</h3>
                   <p className="text-white/45 text-[15px] font-light leading-relaxed">{item.description}</p>
                 </div>

@@ -26,7 +26,7 @@ const MissionSection = ({ data }) => {
     <section
       id="about"
       ref={sectionRef}
-      className="relative bg-[#0f0f10] py-28 md:py-40 lg:py-48 overflow-hidden quantum-grid"
+      className="relative bg-black py-28 md:py-40 lg:py-48 overflow-hidden quantum-grid"
     >
       <QuantumBackground
         particleCount={8}

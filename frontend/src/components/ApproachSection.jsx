@@ -29,7 +29,7 @@ const ApproachSection = ({ data }) => {
     <section
       id="technology"
       ref={sectionRef}
-      className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]"
+      className="bg-black py-28 md:py-36 border-t border-white/[0.06]"
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <p
@@ -60,7 +60,7 @@ const ApproachSection = ({ data }) => {
                 </p>
                 <a
                   href={item.linkUrl}
-                  className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-emerald-400 transition-colors duration-300 group"
+                  className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-gray-300 transition-colors duration-300 group"
                 >
                   {item.linkText}
                   <ArrowRight
@@ -106,14 +106,14 @@ const ApproachSection = ({ data }) => {
           <span className="text-white/30 text-xs font-light mr-4">Slider Principal</span>
           <button
             onClick={handlePrev}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
+            className="w-10 h-10  border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
             aria-label="Previous slide"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={handleNext}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
+            className="w-10 h-10  border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all duration-300"
             aria-label="Next slide"
           >
             <ArrowRight size={16} />

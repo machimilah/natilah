@@ -10,7 +10,7 @@ const PageHero = ({ heading, description }) => {
   }, []);
 
   return (
-    <section className="relative bg-[#0f0f10] pt-40 pb-20 md:pt-48 md:pb-28 overflow-hidden quantum-grid">
+    <section className="relative bg-black pt-40 pb-20 md:pt-48 md:pb-28 overflow-hidden quantum-grid">
       {/* Canvas particle background */}
       <QuantumBackground
         particleCount={10}
@@ -24,7 +24,7 @@ const PageHero = ({ heading, description }) => {
       <div
         className="absolute top-0 left-0 w-[600px] h-[400px] opacity-20 blur-[120px] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse, rgba(16,185,129,0.5), transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(100,100,100,0.5), transparent 70%)',
         }}
       />
       <div

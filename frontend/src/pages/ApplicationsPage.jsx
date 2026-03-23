@@ -35,8 +35,8 @@ const ApplicationsPage = () => {
       />
 
       {/* Use Cases */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={10} connectDistance={130} speed={0.2} opacity={0.10} colorScheme="green" />
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
+        <QuantumBackground particleCount={10} connectDistance={130} speed={0.2} opacity={0.10} colorScheme="white" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
             <p className="text-white/40 text-sm font-light tracking-widest uppercase mb-6">Industry solutions</p>
@@ -48,8 +48,8 @@ const ApplicationsPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {applicationsPageData.useCases.map((useCase, index) => (
               <FadeInSection key={useCase.title} delay={(index + 1) * 150}>
-                <div className="group p-8 rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover:-translate-y-1">
-                  <h3 className="text-white text-xl font-light mb-3 group-hover:text-emerald-400 transition-colors duration-300">
+                <div className="group p-8  border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover:-translate-y-1">
+                  <h3 className="text-white text-xl font-light mb-3 group-hover:text-gray-300 transition-colors duration-300">
                     {useCase.title}
                   </h3>
                   <p className="text-white/45 text-[15px] font-light leading-relaxed mb-6">
@@ -71,7 +71,7 @@ const ApplicationsPage = () => {
       </section>
 
       {/* Global Infrastructure */}
-      <section className="relative bg-[#0f0f10] py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
+      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden">
         <QuantumBackground particleCount={8} connectDistance={110} speed={0.18} opacity={0.10} colorScheme="purple" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <FadeInSection>
@@ -87,7 +87,7 @@ const ApplicationsPage = () => {
             {infrastructureData.sites.map((site, index) => (
               <FadeInSection key={site.name} delay={(index + 1) * 200}>
                 <div className="group">
-                  <div className="relative overflow-hidden rounded-lg mb-5">
+                  <div className="relative overflow-hidden  mb-5">
                     <img
                       src={site.image}
                       alt={site.name}
@@ -104,7 +104,7 @@ const ApplicationsPage = () => {
                   </p>
                   <a
                     href="#"
-                    className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-emerald-400 transition-colors duration-300 group/link"
+                    className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-gray-300 transition-colors duration-300 group/link"
                   >
                     Learn more
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform duration-300" />

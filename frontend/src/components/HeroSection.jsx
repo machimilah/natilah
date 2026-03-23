@@ -6,9 +6,10 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const videoRef = React.useRef(null);
+  const nextVideoRef = React.useRef(null);
 
   const videos = [
-    '/videos/vecteezy_futuristic-data-center-server-room-corridor-walkthrough_72949348.mp4',
+    '/videos/hallway.mp4',
     '/videos/vecteezy_modern-industrial-zone-outdoors-large-factory-with-many_55334149.mp4',
     '/videos/vecteezy_a-row-of-servers-in-a-data-center_69464761.mp4',
   ];
@@ -20,29 +21,37 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const nextVideo = nextVideoRef.current;
+    if (!video || !nextVideo) return;
 
     const handleVideoEnd = () => {
-      setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+      const nextIndex = (currentVideoIndex + 1) % videos.length;
+      setCurrentVideoIndex(nextIndex);
+      video.src = videos[nextIndex];
+      video.play().catch(() => {});
     };
 
     video.addEventListener('ended', handleVideoEnd);
     video.playbackRate = 1;
 
+    // Preload next video
+    const preloadIndex = (currentVideoIndex + 1) % videos.length;
+    nextVideo.src = videos[preloadIndex];
+
     return () => video.removeEventListener('ended', handleVideoEnd);
-  }, [videos.length]);
+  }, [currentVideoIndex, videos]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
+    if (video && !video.src) {
       video.src = videos[currentVideoIndex];
       video.play().catch(() => {});
     }
-  }, [currentVideoIndex, videos]);
+  }, []);
 
   return (
     <section id="home" className="relative w-full min-h-screen flex flex-col overflow-hidden">
-      {/* Background Video — spans full section height, bottom half covered by bg-[#0f0f10] */}
+      {/* Background Video — spans full section height, bottom half covered by bg-black */}
       <div className="absolute inset-0 overflow-hidden">
         <video
           ref={videoRef}
@@ -52,6 +61,14 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
         >
           Your browser does not support the video tag.
         </video>
+        {/* Hidden video for preloading next video */}
+        <video
+          ref={nextVideoRef}
+          muted
+          playsInline
+          className="hidden"
+          preload="auto"
+        />
         <div className="absolute inset-0 bg-black/40" />
         <div
           className="absolute inset-0"
@@ -96,7 +113,7 @@ const HeroSection = ({ data, missionData, bannerVisible }) => {
 
       {/* Mission section: two-column layout */}
       {missionData && (
-        <div className="relative z-10 flex-1 bg-[#0f0f10] w-full px-6 md:px-12 border-t border-white/[0.08]">
+        <div className="relative z-10 flex-1 bg-black w-full px-6 md:px-12 border-t border-white/[0.08]">
           <div className="max-w-[1400px] mx-auto w-full py-16 md:py-20 flex flex-col lg:flex-row">
             {/* Left: heading */}
             <div className="lg:w-2/5 lg:pr-16 mb-10 lg:mb-0">

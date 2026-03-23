@@ -20,7 +20,7 @@ const InfrastructureSection = ({ data }) => {
     <section
       id="applications"
       ref={sectionRef}
-      className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]"
+      className="bg-black py-28 md:py-36 border-t border-white/[0.06]"
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <h2
@@ -50,7 +50,7 @@ const InfrastructureSection = ({ data }) => {
               }`}
               style={{ transitionDelay: `${(index + 2) * 200}ms` }}
             >
-              <div className="relative overflow-hidden rounded-lg mb-4">
+              <div className="relative overflow-hidden  mb-4">
                 <img
                   src={site.image}
                   alt={site.name}
@@ -64,7 +64,7 @@ const InfrastructureSection = ({ data }) => {
               </p>
               <a
                 href={site.linkUrl}
-                className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-emerald-400 transition-colors duration-300 group/link"
+                className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-gray-300 transition-colors duration-300 group/link"
               >
                 {site.linkText}
                 <ArrowRight

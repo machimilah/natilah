@@ -29,7 +29,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
     <nav
       className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
         showDarkBg
-          ? 'bg-[#0f0f10]/95 backdrop-blur-md shadow-lg'
+          ? 'bg-black/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
       style={{ top: isScrolled ? 0 : topOffset }}
@@ -39,12 +39,12 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
           {/* Logo */}
           <Link
             to="/"
-            className="hover:opacity-80 transition-opacity duration-300 flex items-center"
+            className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0 lg:mr-20"
           >
             <img
               src="/natilah_white_transparent.png"
               alt="Natilah Technologies"
-              className="h-20 w-auto"
+              className="h-20 lg:h-12 w-auto"
             />
           </Link>
 
@@ -89,7 +89,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-[#0f0f10]/98 backdrop-blur-lg overflow-hidden transition-all duration-500 ${
+        className={`lg:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg overflow-hidden transition-all duration-500 ${
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >

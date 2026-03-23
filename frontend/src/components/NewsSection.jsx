@@ -20,7 +20,7 @@ const NewsSection = ({ data }) => {
     <section
       id="news"
       ref={sectionRef}
-      className="bg-[#0f0f10] py-28 md:py-36 border-t border-white/[0.06]"
+      className="bg-black py-28 md:py-36 border-t border-white/[0.06]"
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <h2
@@ -45,7 +45,7 @@ const NewsSection = ({ data }) => {
               <p className="text-white/30 text-xs font-light mb-4">
                 {item.date}
               </p>
-              <h3 className="text-white text-[15px] font-normal leading-snug mb-4 group-hover:text-emerald-400 transition-colors duration-300">
+              <h3 className="text-white text-[15px] font-normal leading-snug mb-4 group-hover:text-gray-300 transition-colors duration-300">
                 <a href={item.linkUrl}>{item.title}</a>
               </h3>
               <p className="text-white/40 text-sm font-light leading-relaxed mb-4 line-clamp-3">
@@ -53,7 +53,7 @@ const NewsSection = ({ data }) => {
               </p>
               <a
                 href={item.linkUrl}
-                className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-emerald-400 transition-colors duration-300 group/link"
+                className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-gray-300 transition-colors duration-300 group/link"
               >
                 Read More
                 <ArrowRight

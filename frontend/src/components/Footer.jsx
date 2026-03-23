@@ -11,8 +11,8 @@ const XIcon = () => (
 
 const Footer = ({ data }) => {
   return (
-    <footer className="relative bg-[#0f0f10] pt-20 pb-16 border-t border-white/[0.06] overflow-hidden">
-      <QuantumBackground particleCount={8} connectDistance={120} speed={0.15} opacity={0.08} colorScheme="green" />
+    <footer className="relative bg-black pt-20 pb-16 border-t border-white/[0.06] overflow-hidden">
+      <QuantumBackground particleCount={8} connectDistance={120} speed={0.15} opacity={0.08} colorScheme="white" />
       <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Left: Logo + Copyright */}
