@@ -14,7 +14,7 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Natilah — Quantum-Inspired GPU Datacenter Scheduling</title>
+        <title>Natilah</title>
         <meta name="description" content="Natilah builds Quasar, a quantum-inspired scheduler that achieves 72% win rate against 11 production schedulers. Mean +16.2% makespan reduction, never worse than FIFO." />
         <meta property="og:title" content="Natilah — Quantum-Inspired GPU Scheduling" />
         <meta property="og:description" content="Quasar optimizes GPU datacenters with quantum-inspired algorithms. Benchmarked against 11 production schedulers across 132 matchups." />
