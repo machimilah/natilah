@@ -45,7 +45,7 @@ const HomePage = () => {
             {/* Image Display */}
             <div className="relative overflow-hidden">
               <img
-                src="/quantum-computer.jpg"
+                src="/images/quantum-computer.jpg"
                 alt="Quantum Disc"
                 className="w-full h-[500px] object-cover transition-all duration-500"
               />

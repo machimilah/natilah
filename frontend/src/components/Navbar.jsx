@@ -42,7 +42,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
             className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0 lg:mr-20"
           >
             <img
-              src="/natilah_white_transparent.png"
+              src="/images/natilah_white_transparent.png"
               alt="Natilah Technologies"
               className="h-20 lg:h-12 w-auto"
             />

@@ -22,7 +22,7 @@ const Footer = ({ data }) => {
               className="inline-block mb-8 hover:opacity-80 transition-opacity duration-300"
             >
               <img
-                src="/natilah_white_transparent.png"
+                src="/images/natilah_white_transparent.png"
                 alt="Natilah Technologies"
                 className="h-20 w-auto"
               />
