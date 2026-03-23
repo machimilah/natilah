@@ -2,7 +2,8 @@
   "buildCommand": "cd frontend && yarn install --legacy-peer-deps && yarn build",
   "outputDirectory": "frontend/build",
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/(.*)\\.xml", "destination": "/$1.xml" },
+    { "source": "/(.*)\\.txt", "destination": "/$1.txt" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
