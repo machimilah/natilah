@@ -31,7 +31,7 @@ const Footer = ({ data }) => {
 
           {/* Right: Phrase */}
           <div className="mt-12 lg:mt-0">
-            <p className="text-white text-3xl lg:text-4xl font-light">The time to evolve is now.</p>
+            
           </div>
         </div>
       </div>
