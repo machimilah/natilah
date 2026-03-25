@@ -10,22 +10,26 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Hide scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f0f10;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: transparent;
+}
+
+/* Firefox scrollbar hide */
+* {
+  scrollbar-width: none;
 }
 
 /* Line clamp utility */
