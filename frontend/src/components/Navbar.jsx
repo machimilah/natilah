@@ -27,14 +27,14 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
 
   return (
     <nav
-      className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
+      className={`fixed left-1/2 -translate-x-1/2 z-40 transition-all duration-500 rounded-2xl mx-4 ${
         showDarkBg
           ? 'bg-black/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
-      style={{ top: isScrolled ? 0 : topOffset }}
+      style={{ top: isScrolled ? '20px' : topOffset + 20, maxWidth: 'calc(100% - 32px)' }}
     >
-      <div className="w-full lg:max-w-[40%] lg:mx-auto px-6 md:px-12">
+      <div className="w-full px-6 md:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link
@@ -89,7 +89,7 @@ const Navbar = ({ links, bannerVisible, isHome }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg overflow-hidden transition-all duration-500 ${
+        className={`lg:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg overflow-hidden transition-all duration-500 rounded-b-2xl ${
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >

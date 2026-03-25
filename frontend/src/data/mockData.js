@@ -1,23 +1,22 @@
 export const newsBanner = {
   text: "QUASAR achieves 72% win rate against 11 production schedulers — mean +16.2% makespan reduction, never worse than FIFO.",
   linkText: "See the full benchmark.",
-  linkUrl: "/research"
+  linkUrl: "/applications"
 };
 
 export const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Technology", href: "/technology" },
-  { label: "Research", href: "/research" },
   { label: "Applications", href: "/applications" },
-  { label: "News", href: "/news" }
+  { label: "News", href: "/news" },
+  { label: "Contact", href: "/contact" }
 ];
 
 export const heroData = {
   heading: "Making datacenters more efficient",
   description: "Natilah builds Quasar. The next generation scheduler.",
-  ctaText: "Our technology",
-  ctaLink: "/technology"
+  ctaText: "Learn more",
+  ctaLink: "/about"
 };
 
 export const missionData = {
@@ -37,7 +36,7 @@ export const approachData = [
     longDescription: "For N jobs and M machines, QUASAR defines N×M binary variables x_{i,j} ∈ {0,1}. Three QUBO terms encode: (1) assignment constraints — every job gets exactly one machine (penalty 200.0); (2) GPU capacity — no machine is overloaded (penalty 100.0); (3) load-balancing objective — minimize sum of squared loads to balance runtimes across machines. The Q matrix is solved by three solvers in parallel; the lowest-energy feasible solution wins.",
     image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
     linkText: "Learn more",
-    linkUrl: "/technology"
+    linkUrl: "/about"
   },
   {
     id: 2,
@@ -46,7 +45,7 @@ export const approachData = [
     longDescription: "LNS+SB (Large Neighborhood Search + Simulated Bifurcation) starts from Best-Fit-Decreasing and iteratively destroys 3–8 jobs then repairs via sub-QUBO solves — using ExhaustiveSolver for sub-problems ≤24 variables and SimulatedBifurcation for larger ones. Adaptive SA auto-calibrates its initial temperature and uses reheating to escape local minima. Simulated Bifurcation mimics Kerr parametric oscillator dynamics from quantum physics, excelling at dense constraint matrices. All three run concurrently with a 1,500ms timeout; the orchestrator returns the best-ranked feasible solution.",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80",
     linkText: "Learn more",
-    linkUrl: "/technology"
+    linkUrl: "/about"
   },
   {
     id: 3,
@@ -55,7 +54,7 @@ export const approachData = [
     longDescription: "For small queues (≤128 jobs), QUASAR solves everything in a single QUBO. For larger queues, it partitions into overlapping windows: window_size=128, overlap=20% (min 8 jobs), stride=window_size−overlap. Jobs in the overlap zone appear in two consecutive windows — the first window to assign them wins. After all windows run, per-window timings are discarded and a global schedule rebuild sorts all assigned jobs by machine and submit time, stacking them sequentially to produce the final makespan. The FIFO baseline uses identical windowing so the comparison is apples-to-apples.",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
     linkText: "Learn more",
-    linkUrl: "/technology"
+    linkUrl: "/about"
   },
   {
     id: 4,
@@ -64,7 +63,7 @@ export const approachData = [
     longDescription: "After solving, QUASAR scores QUBO, FIFO-greedy, and LPT-greedy on a multi-objective function (makespan + 0.3×SLA violations + 0.1×wait time). The best candidate wins — FIFO always competes as the safe default. Layer 2 snapshots a 64-bit generation counter before solving; if the cluster changed, Layer 3 re-validates every assignment across GPU capacity, memory, GPU type, and node health. Layer 4 greedy fallback recovers invalidated assignments deterministically. Layer 5 mutex prevents concurrent scheduling races. Under realistic cluster churn (5–20%), recovery is 100%; under extreme 40% churn, 83% of stale assignments recover and 96% placement rate is maintained.",
     image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80",
     linkText: "Learn more",
-    linkUrl: "/technology"
+    linkUrl: "/about"
   }
 ];
 
@@ -76,14 +75,14 @@ export const infrastructureData = {
       name: "96-GPU Heterogeneous Cluster Benchmark",
       image: "https://images.unsplash.com/photo-1580106815433-a5b1d1d53d85?auto=format&fit=crop&w=900&q=80",
       linkText: "View benchmark results",
-      linkUrl: "/research",
+      linkUrl: "/applications",
       description: "8 A100 nodes + 8 V100 nodes, 3 traces × 4 scales = 12 scenarios, 132 total matchups vs 11 schedulers. 72% win rate (71W/15T/13L), mean +16.2% makespan reduction. Best case: +76.3% vs Gandiva."
     },
     {
       name: "2,048-GPU Enterprise Scale Validation",
       image: "https://images.unsplash.com/photo-1680992046626-418f7e910589?auto=format&fit=crop&w=900&q=80",
       linkText: "View benchmark results",
-      linkUrl: "/research",
+      linkUrl: "/applications",
       description: "320 nodes / 2,048 GPUs (192 A100 + 128 V100), 5,000 jobs per trace. +7.3% average improvement, 61% win rate (20W/13T/0L), zero losses. Equivalent to ~$3.9M/year savings at $3/GPU-hour."
     }
   ]
@@ -141,18 +140,18 @@ export const aboutPageData = {
     paragraphs: [
       "Natilah was founded on the observation that GPU datacenter scheduling — the core operational problem of the AI infrastructure era — is still solved with greedy heuristics that process jobs one at a time.",
       "As AI training runs grew from single GPUs to multi-hundred-GPU distributed jobs, and as datacenters scaled to thousands of nodes, the gap between what greedy schedulers could deliver and what was globally optimal grew exponentially.",
-      "Our founders — systems architects and optimization researchers — asked a different question: **what if we encoded the entire batch scheduling problem as a QUBO and solved it simultaneously, with multiple quantum-inspired solvers racing in parallel?**",
-      "The result is QUASAR: a Hybrid Quantum Optimizer benchmarked against 11 production schedulers across 132 matchups — achieving a 72% win rate, mean +16.2% makespan reduction, and a hard guarantee it is never worse than FIFO. Validated at 2,048-GPU enterprise scale with zero losses."
+      "We asked a different question: **what if we encoded the entire batch scheduling problem following Quantum Optimization Theory and solved it simultaneously?**",
     ]
   },
   values: [
-    { title: "Mathematically rigorous", description: "Every scheduling decision is grounded in combinatorial optimization theory. QUASAR's QUBO formulation has a provable competitive selection guarantee — never worse than FIFO on any input." },
-    { title: "Quantum-ready", description: "Our QUBO formulation maps directly to D-Wave quantum annealers and QAOA circuits — the same matrix that runs on CPUs today runs on quantum hardware tomorrow, no reformulation required." },
-    { title: "Production-safe", description: "A five-layer safety system (competitive selection, stale-state detection, hard-constraint validation, greedy fallback, mutex) ensures zero regressions under real cluster churn conditions." },
-    { title: "Multi-objective", description: "Unlike heuristics hardcoded for one metric, QUASAR's QUBO encodes makespan, SLA deadlines, fairness, and priority as penalty terms — any objective, no rewrite needed." }
+    { title: "Mathematically rigorous", description: "Every scheduling decision is grounded in combinatorial optimization theory." },
+    { title: "Quantum-ready", description: "The same matrix that runs on CPUs today runs on quantum hardware tomorrow, no reformulation required." },
+    { title: "Production-safe", description: "A five-layer safety system ensures zero regressions under real cluster churn conditions." },
+    { title: "Multi-objective", description: "Unlike heuristics hardcoded for one metric, QUASAR encodes: makespan, SLA deadlines, fairness, and priority as penalty terms — any objective, no rewrite needed." }
   ],
   team: [
-    { name: "Máximo Caraballo", role: "Founder - CEO and Quasar's developer", bio: "Milanesa" },
+    { name: "Máximo Caraballo", role: "Founder - CEO and Quasar's developer", bio: "Milanesa", linkedinUrl: "https://www.linkedin.com/in/m%C3%A1ximo-caraballo-chichiraldi-2b8782355/" },
+    { name: "Samuel Caraballo", role: "Co-Founder", bio: "", linkedinUrl: null },
   ]
 };
 
@@ -216,8 +215,8 @@ export const applicationsPageData = {
     {
       title: "Kubernetes & Slurm",
       description: "Drop-in deployment as a Kubernetes scheduler extender or Slurm plugin. No cluster downtime, no hardware changes. Five-layer safety system guarantees never worse than FIFO on any input.",
-      metric: "0%",
-      metricLabel: "floor — never worse than FIFO"
+      metric: "0% decay",
+      metricLabel: " never worse than FIFO"
     }
   ]
 };

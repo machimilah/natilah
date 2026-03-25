@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import HeroSection from '../components/HeroSection';
 import QuantumBackground from '../components/QuantumBackground';
+import GlobeAnimation from '../components/GlobeAnimation';
 import { heroData, missionData, scalingData } from '../data/mockData';
 import { useNews } from '../hooks/useData';
 
@@ -72,7 +73,7 @@ const HomePage = () => {
       </section>
 
       {/* Infrastructure Preview */}
-      <section className="relative bg-black py-28 md:py-40 lg:py-48 border-t border-white/[0.06] overflow-hidden">
+      <section className="relative bg-black py-28 md:py-40 lg:py-48 border-t border-white/[0.06] overflow-visible">
         <QuantumBackground
           particleCount={8}
           connectDistance={100}
@@ -80,17 +81,21 @@ const HomePage = () => {
           opacity={0.25}
           colorScheme="purple"
         />
-        <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
-          {/* Header - Centered */}
-          <div className="text-center mb-8 lg:mb-12 ml-0 lg:-ml-16">
+        {/* Globe Background - Right Side */}
+        <div className="hidden lg:block absolute right-0 opacity-70 pointer-events-none" style={{ zIndex: 0, width: '1800px', height: '1800px', marginRight: '-500px', top: '70%', transform: 'translateY(-50%)' }}>
+          <GlobeAnimation />
+        </div>
+        <div className="relative z-10 w-full lg:max-w-[70%] lg:ml-0 px-6 md:px-12">
+          {/* Header - Left Aligned */}
+          <div className="text-left mb-8 lg:mb-12 ml-0 lg:ml-32">
             <p className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-6">MULTI-OBJECTIVE · VS PRODUCTION AVG</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-[1.1] tracking-tight mb-8">
               Six goal simultaneous optimization
             </h2>
           </div>
 
-          {/* Six Goals Containers - Centered */}
-          <div className="flex flex-wrap justify-center gap-2 lg:gap-3 mb-16 lg:mb-20 px-6 md:px-12 ml-0 lg:-ml-16">
+          {/* Six Goals Containers - Left Aligned */}
+          <div className="flex flex-wrap justify-start gap-2 lg:gap-3 mb-16 lg:mb-20 px-6 md:px-12 ml-0 lg:ml-16">
             {[
               'Makespan optimization',
               'Job completion speed',
@@ -106,7 +111,7 @@ const HomePage = () => {
           </div>
 
           {/* Main Layout - Metrics Left, Comparison Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 lg:mx-auto lg:max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 lg:ml-32">
             {/* Left: Metrics (double column) */}
             <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:gap-y-10 pr-0 lg:pr-12">
               <div className="pb-6 lg:pb-8">
@@ -140,9 +145,9 @@ const HomePage = () => {
             </div>
 
             {/* Right: Comparison Section */}
-            <div className="relative pl-0 lg:pl-12">
+            <div className="relative pl-0 lg:pl-0 lg:-ml-40">
               {/* Gradient divider line */}
-              <div className="absolute -left-12 lg:-left-24 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+              <div className="absolute -left-6 lg:-left-12 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
               <p className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-8">Outperforms production/research schedulers</p>
               <p className="text-white text-lg lg:text-xl font-light mb-10">Composite 6-dimensional score</p>
 
@@ -182,6 +187,7 @@ const HomePage = () => {
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
             {newsData.map((item) => (
               <article key={item.id} className="group">

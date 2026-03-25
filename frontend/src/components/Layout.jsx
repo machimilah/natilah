@@ -12,7 +12,6 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-black">
-      <NewsBanner data={newsBanner} onClose={() => setBannerVisible(false)} />
       <Navbar links={navLinks} bannerVisible={bannerVisible} isHome={isHome} />
       <main>{children}</main>
       <Footer data={footerData} />

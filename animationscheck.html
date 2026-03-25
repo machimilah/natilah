@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quantum Earth - Bright Front View</title>
+    <style>
+        body { margin: 0; background-color: #000; overflow: hidden; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+        .hud {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: 0.6; /* Increased HUD visibility to match */
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hud">VIEWPORT_LOCK: FRONT_HEMISPHERE<br>LUMINANCE: BOOSTED<br>JUMP_STATE: VISIBLE_ONLY</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        let scene, camera, renderer, globeGroup, worldGroup, photonGroup, ripple;
+        let landCoords = []; 
+        let timer = 0;
+        let isWaiting = true; 
+        const trailDots = 25;
+
+        init();
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 22;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            globeGroup = new THREE.Group();
+            worldGroup = new THREE.Group();
+            globeGroup.add(worldGroup);
+            globeGroup.rotation.z = 0.41; // Axial Tilt
+            scene.add(globeGroup);
+
+            fetch('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson')
+                .then(res => res.json())
+                .then(data => {
+                    processLand(data);
+                    setupElements();
+                    setTimeout(jump, 1000);
+                    animate();
+                });
+        }
+
+        function processLand(data) {
+            const radius = 7;
+            const positions = [];
+            data.features.forEach(feature => {
+                feature.geometry.coordinates.forEach(polygon => {
+                    const points = Array.isArray(polygon[0][0]) ? polygon[0] : polygon;
+                    points.forEach(coord => {
+                        const phi = (90 - coord[1]) * (Math.PI / 180);
+                        const theta = (coord[0] + 180) * (Math.PI / 180);
+                        const v = new THREE.Vector3(
+                            -(radius * Math.sin(phi) * Math.cos(theta)),
+                            radius * Math.cos(phi),
+                            radius * Math.sin(phi) * Math.sin(theta)
+                        );
+                        positions.push(v.x, v.y, v.z);
+                        landCoords.push(v);
+                    });
+                });
+            });
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            
+            // --- BRIGHTNESS BOOSTED HERE ---
+            const material = new THREE.PointsMaterial({ 
+                color: 0xffffff, 
+                size: 0.045, 
+                transparent: true, 
+                opacity: 0.85, // Increased from 0.4
+                blending: THREE.AdditiveBlending // Makes overlapping dots much brighter
+            });
+            
+            worldGroup.add(new THREE.Points(geometry, material));
+        }
+
+        function setupElements() {
+            photonGroup = new THREE.Group();
+            for(let i = 0; i < trailDots; i++) {
+                const pMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 - (i/trailDots) });
+                const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.12 * (1 - i/trailDots), 8, 8), pMat);
+                photonGroup.add(pMesh);
+            }
+            const light = new THREE.PointLight(0xffffff, 4, 8);
+            photonGroup.add(light);
+            photonGroup.visible = false;
+            worldGroup.add(photonGroup);
+
+            const ringGeom = new THREE.RingGeometry(0.1, 0.15, 32);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0 });
+            ripple = new THREE.Mesh(ringGeom, ringMat);
+            worldGroup.add(ripple);
+        }
+
+        function jump() {
+            if (landCoords.length < 2) return;
+
+            const visibleLand = landCoords.filter(v => {
+                const worldPos = v.clone().applyMatrix4(worldGroup.matrixWorld);
+                return worldPos.z > 5; 
+            });
+
+            const targetPool = visibleLand.length > 5 ? visibleLand : landCoords;
+            const start = targetPool[Math.floor(Math.random() * targetPool.length)];
+            const end = targetPool[Math.floor(Math.random() * targetPool.length)];
+            
+            const mid = start.clone().lerp(end, 0.5).normalize().multiplyScalar(11);
+            const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+            
+            photonGroup.userData.curve = curve;
+            photonGroup.userData.endPos = end;
+            
+            timer = 0;
+            isWaiting = false;
+            photonGroup.visible = true;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            worldGroup.rotation.y += 0.003;
+            worldGroup.updateMatrixWorld();
+
+            if (!isWaiting && photonGroup.userData.curve) {
+                timer += 0.055; 
+
+                if (timer >= 1) {
+                    isWaiting = true;
+                    photonGroup.visible = false;
+                    
+                    ripple.position.copy(photonGroup.userData.endPos);
+                    ripple.lookAt(new THREE.Vector3(0,0,0)); 
+                    ripple.scale.set(1, 1, 1);
+                    ripple.material.opacity = 1;
+
+                    setTimeout(jump, 1000);
+                } else {
+                    for(let i = 0; i < trailDots; i++) {
+                        const tOffset = Math.max(0, timer - (i * 0.004));
+                        const pos = photonGroup.userData.curve.getPoint(tOffset);
+                        photonGroup.children[i].position.copy(pos);
+                    }
+                }
+            }
+
+            if (ripple.material.opacity > 0) {
+                ripple.scale.multiplyScalar(1.1);
+                ripple.material.opacity -= 0.04;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

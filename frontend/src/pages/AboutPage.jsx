@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { User } from 'lucide-react';
+import { User, Linkedin } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import PageHero from '../components/PageHero';
 import QuantumBackground from '../components/QuantumBackground';
@@ -142,7 +142,35 @@ const AboutPage = () => {
                   </div>
                   <h3 className="text-white text-base font-normal mb-1">{member.name}</h3>
                   <p className="text-gray-300/70 text-sm font-light mb-2">{member.role}</p>
-                  <p className="text-white/40 text-sm font-light leading-relaxed">{member.bio}</p>
+                  <p className="text-white/40 text-sm font-light leading-relaxed mb-4">{member.bio}</p>
+                  <div className="flex justify-end mb-4">
+                    {member.linkedinUrl ? (
+                      <a
+                        href={member.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity duration-300"
+                        title="LinkedIn Profile"
+                      >
+                        <Linkedin size={20} className="text-white/60" />
+                      </a>
+                    ) : member.name === "Samuel Caraballo" ? (
+                      <div className="cursor-default">
+                        <Linkedin size={20} className="text-white/60" />
+                      </div>
+                    ) : member.name === "Máximo Caraballo" ? (
+                      <a
+                        href="https://www.linkedin.com/in/m%C3%A1ximo-caraballo-chichiraldi-2b8782355/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity duration-300"
+                        title="LinkedIn Profile"
+                      >
+                        <Linkedin size={20} className="text-white/60" />
+                      </a>
+                    ) : null}
+                  </div>
+                  <div className="border-t border-white/20"></div>
                 </div>
               </FadeInSection>
             ))}
