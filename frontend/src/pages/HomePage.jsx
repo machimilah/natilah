@@ -88,16 +88,16 @@ const HomePage = () => {
         <HeroSection data={{ heading: '', description: '', ctaLink: '', ctaText: '' }} bannerVisible={true} />
 
         {/* 3. Platform & Technology Section */}
-        <section className="relative z-10 py-16 md:py-24 px-6 md:px-12 bg-white/60 backdrop-blur-3xl border-t border-slate-200/50">
+        <section className="relative z-10 py-16 md:py-24 px-6 md:px-12 bg-slate-950 border-t border-slate-800">
           <div className="max-w-[1440px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 mb-0 items-center">
               <div className="reveal-up max-w-4xl">
                 
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-slate-900 leading-[1.1] tracking-tight mb-8">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-[1.1] tracking-tight mb-8">
                   The Future of Scheduling<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] to-[#ffca55]">Quasar</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] via-blue-500 to-[#ffca55] bg-[length:200%_auto] animate-gradient-move">Quasar</span>
                 </h2>
-                <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed">
+                <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed">
                   Natilah's techonolgy uses quantum-inspired algorithms and common quantum language to orchestrate classical hardware at unprecedented scales, unlocking new frontiers of performance.
                 </p>
               </div>
@@ -152,25 +152,25 @@ const HomePage = () => {
         </section>
 
         {/* 7. Final CTA */}
-        <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 bg-gradient-to-b from-slate-50 to-white text-center">
+        <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 bg-slate-950 text-center">
           <div className="max-w-[1000px] mx-auto reveal-up">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-slate-900 tracking-tight leading-[1.05] mb-10">
-              Build on the <br className="hidden sm:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] to-[#ffca55]">cutting edge.</span>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white tracking-tight leading-[1.05] mb-10">
+              Build on the <br className="hidden sm:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] via-blue-500 to-[#ffca55] bg-[length:200%_auto] animate-gradient-move">cutting edge.</span>
             </h2>
-            <p className="text-xl text-slate-500 font-light mb-14 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-300 font-light mb-14 max-w-2xl mx-auto leading-relaxed">
               Step into a new era of performance. Join the researchers, enterprise scaling teams, and visionaries optimizing with Natilah.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
                 to="/contact"
-                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-slate-900 text-white font-medium rounded-full hover:bg-black hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 text-lg flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-blue-600 hover:bg-gradient-to-r hover:from-[#ffca55] hover:via-blue-500 hover:to-[#ffca55] hover:bg-[length:200%_auto] hover:animate-gradient-move text-white hover:text-slate-950 font-medium rounded-full shadow-[0_4px_14px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_-10px_rgba(255,202,85,0.4)] hover:-translate-y-1 transition-all duration-300 text-lg flex items-center justify-center gap-2 group"
               >
                 Request Access <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/docs"
-                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-white border border-slate-200 text-slate-700 font-medium rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 text-lg flex items-center justify-center"
+                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-transparent border border-slate-700 text-white font-medium rounded-full hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 text-lg flex items-center justify-center"
               >
                 Read Documentation
               </Link>
