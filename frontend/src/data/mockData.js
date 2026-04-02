@@ -6,9 +6,9 @@ export const newsBanner = {
 
 export const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Applications", href: "/applications" },
+  { label: "Products", href: "/products" },
   { label: "News", href: "/news" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" }
 ];
 

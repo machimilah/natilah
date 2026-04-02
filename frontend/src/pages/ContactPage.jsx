@@ -1,204 +1,174 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Mail, Linkedin, Twitter } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import PageHero from '../components/PageHero';
-import QuantumBackground from '../components/QuantumBackground';
-
-const FadeInSection = ({ children, delay = 0 }) => {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-};
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { Link } from 'react-router-dom';
+import { Send, MapPin, Mail, Phone, ArrowUpRight } from 'lucide-react';
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const containerRef = useRef(null);
+  const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  useGSAP(() => {
+    // Subtle background float
+    gsap.to('.orb-float', {
+      y: '20vh',
+      rotation: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+
+  }, { scope: containerRef });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    // Simulate API call
     setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+      setIsSubmitting(false);
+      setFormState({ name: '', email: '', message: '' });
+      alert("Message received. Natilah Support will be in touch shortly.");
+    }, 1500);
   };
 
   return (
     <>
       <Helmet>
-        <title>Contact — Natilah</title>
-        <meta name="description" content="Get in touch with the Natilah team. We'd love to hear from you." />
-        <meta property="og:title" content="Contact — Natilah" />
-        <meta property="og:url" content="https://natilah.com/contact" />
-        <link rel="canonical" href="https://natilah.com/contact" />
+        <title>Initiate Contact | Natilah Compute</title>
+        <meta name="description" content="Reach out to the architects reshaping High Performance Computing. Schedule a demonstration or consult with our engineers." />
       </Helmet>
-      <PageHero
-        heading="Get in touch"
-      />
 
-      {/* Contact Form Section */}
-      <section className="relative bg-black py-24 md:py-32 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground particleCount={8} connectDistance={120} speed={0.15} opacity={0.10} colorScheme="white" />
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Information */}
-            <div>
-              <FadeInSection>
-                <h2 className="text-3xl md:text-4xl font-light text-white leading-tight tracking-tight mb-12">
-                  Contact information
-                </h2>
-              </FadeInSection>
+      <div ref={containerRef} className="relative bg-[#FAFAFA] text-slate-800 font-sans min-h-screen pt-32 pb-48 overflow-hidden flex flex-col justify-center">
+        
+        {/* Abstract Geometry */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="orb-float absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-purple-100/40 to-blue-100/30 blur-[100px] mix-blend-multiply rounded-full opacity-60" />
+          <div className="absolute bottom-[0%] left-[-10%] w-[60vw] h-[60vw] bg-emerald-50/30 blur-[120px] mix-blend-multiply rounded-full opacity-50" />
+        </div>
 
-              <div className="space-y-8">
-                <FadeInSection delay={200}>
-                  <div className="flex gap-4">
-                    <Mail className="text-white/40 flex-shrink-0 mt-1" size={24} />
-                    <div>
-                      <p className="text-white/40 text-sm font-light mb-2">Email</p>
-                      <a href="mailto:hello@natilah.com" className="text-white hover:text-gray-300 transition-colors duration-300">
-                        hello@natilah.com
-                      </a>
-                    </div>
-                  </div>
-                </FadeInSection>
+        <div className="max-w-[1440px] w-full mx-auto px-6 md:px-8 lg:px-12 relative z-10 flex-grow grid grid-cols-1 lg:grid-cols-2 gap-20 items-start mt-10">
+          
+          {/* Left Column - Information */}
+          <div className="max-w-2xl pr-4">
+            
+            
+            <h1 className="reveal-hero text-6xl md:text-8xl font-light text-slate-900 leading-[1] tracking-tight mb-8">
+              Let's <span className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">Connect</span>.
+            </h1>
+            
+            <p className="reveal-hero text-xl md:text-2xl text-slate-500 font-light leading-relaxed mb-16 max-w-xl">
+              Initiate a dialogue regarding enterprise deployment, custom integration schedules, or investment opportunities.
+            </p>
 
-                <FadeInSection delay={400}>
-                  <div className="flex gap-4">
-                    <Linkedin className="text-white/40 flex-shrink-0 mt-1" size={24} />
-                    <div>
-                      <p className="text-white/40 text-sm font-light mb-2">LinkedIn</p>
-                      <a href="#" className="text-white hover:text-gray-300 transition-colors duration-300">
-                        linkedin.com/company/natilah
-                      </a>
-                    </div>
-                  </div>
-                </FadeInSection>
+            <div className="space-y-12">
+              <div className="contact-item group flex gap-6 items-start">
+                <div className="w-14 h-14 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500 shrink-0">
+                   <MapPin className="text-[#ffca55]" size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium text-slate-900 mb-2">Global Headquarters</h3>
+                  <p className="text-slate-500 leading-relaxed font-light text-lg">
+                    Silicon Valley Division<br/>
+                    100 Innovation Way<br/>
+                    Palo Alto, CA 94301
+                  </p>
+                </div>
+              </div>
 
-                <FadeInSection delay={600}>
-                  <div className="flex gap-4">
-                    <Twitter className="text-white/40 flex-shrink-0 mt-1" size={24} />
-                    <div>
-                      <p className="text-white/40 text-sm font-light mb-2">Twitter</p>
-                      <a href="#" className="text-white hover:text-gray-300 transition-colors duration-300">
-                        @natilah
-                      </a>
-                    </div>
-                  </div>
-                </FadeInSection>
+              <div className="contact-item group flex gap-6 items-start">
+                <div className="w-14 h-14 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500 shrink-0">
+                   <Phone className="text-purple-500" size={24} />
+                </div>
+                <div>
+                   <h3 className="text-xl font-medium text-slate-900 mb-2">Direct Line</h3>
+                  <a href="tel:+18005550199" className="text-slate-500 leading-relaxed font-light text-lg hover:text-[#ffca55] transition-colors">
+                    +1 (800) 555-0199
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-item group flex gap-6 items-start">
+                <div className="w-14 h-14 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500 shrink-0">
+                   <Mail className="text-emerald-500" size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium text-slate-900 mb-2">Electronic Mail</h3>
+                  <a href="mailto:deploy@natilah.com" className="text-slate-500 leading-relaxed font-light text-lg hover:text-[#ffca55] transition-colors break-words">
+                    deploy@natilah.com
+                  </a>
+                </div>
               </div>
             </div>
-
-            {/* Contact Form */}
-            <FadeInSection delay={200}>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-white/40 text-sm font-light mb-3">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors duration-300"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-white/40 text-sm font-light mb-3">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors duration-300"
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="subject" className="block text-white/40 text-sm font-light mb-3">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors duration-300"
-                    placeholder="How can we help?"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-white/40 text-sm font-light mb-3">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="6"
-                    className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors duration-300 resize-none"
-                    placeholder="Your message..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-white text-black px-8 py-3 font-light hover:bg-gray-100 transition-colors duration-300"
-                >
-                  {submitted ? 'Message sent!' : 'Send message'}
-                </button>
-              </form>
-            </FadeInSection>
           </div>
+
+          {/* Right Column - Form */}
+          <div className="bg-white/80 backdrop-blur-3xl rounded-[2.5rem] p-10 md:p-14 border border-slate-200/60 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.05)] relative overflow-hidden">
+             {/* Form subtle glow bg */}
+             <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gradient-to-bl from-blue-50/50 to-transparent pointer-events-none" />
+
+            <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
+              <div className="form-input-group">
+                <label htmlFor="name" className="block text-sm font-semibold uppercase tracking-widest text-slate-400 mb-3">Identification</label>
+                <input 
+                  type="text" 
+                  id="name"
+                  required
+                  placeholder="Full Name / Organization"
+                  className="w-full bg-transparent border-b border-slate-300 py-4 text-xl text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-blue-600 transition-colors duration-300"
+                  value={formState.name}
+                  onChange={(e) => setFormState({...formState, name: e.target.value})}
+                />
+              </div>
+
+              <div className="form-input-group">
+                <label htmlFor="email" className="block text-sm font-semibold uppercase tracking-widest text-slate-400 mb-3">Return Vector</label>
+                <input 
+                  type="email" 
+                  id="email"
+                  required
+                  placeholder="Work Email Address"
+                  className="w-full bg-transparent border-b border-slate-300 py-4 text-xl text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-blue-600 transition-colors duration-300"
+                  value={formState.email}
+                  onChange={(e) => setFormState({...formState, email: e.target.value})}
+                />
+              </div>
+
+              <div className="form-input-group pt-4">
+                <label htmlFor="message" className="block text-sm font-semibold uppercase tracking-widest text-slate-400 mb-3">Transmission Payload</label>
+                <textarea 
+                  id="message"
+                  required
+                  rows="4"
+                  placeholder="Describe your computational bottlenecks or deployment timeline..."
+                  className="w-full bg-transparent border-b border-slate-300 py-4 text-xl text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-blue-600 transition-colors duration-300 resize-none"
+                  value={formState.message}
+                  onChange={(e) => setFormState({...formState, message: e.target.value})}
+                />
+              </div>
+
+              <div className="form-input-group pt-8">
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="group w-full flex items-center justify-between text-white bg-slate-900 hover:bg-blue-600 rounded-full px-8 py-5 text-lg font-medium transition-all duration-500 shadow-xl shadow-slate-200 hover:shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  <span>{isSubmitting ? 'Transmitting...' : 'Initiate Sequence'}</span>
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                     {isSubmitting ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                  </div>
+                </button>
+              </div>
+            </form>
+          </div>
+
         </div>
-      </section>
+      </div>
     </>
   );
 };

@@ -6,7 +6,7 @@ module.exports = {
     "./public/index.html"
   ],
   theme: {
-  	extend: {
+  	extend: { fontFamily: { sans: ['"Rubik"', 'sans-serif'] },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

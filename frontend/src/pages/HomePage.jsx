@@ -1,220 +1,184 @@
-import React, { useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Activity, Binary, Cpu, Network, Zap, Shield, GitMerge } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import HeroSection from '../components/HeroSection';
-import QuantumBackground from '../components/QuantumBackground';
-import GlobeAnimation from '../components/GlobeAnimation';
-import { heroData, missionData, scalingData } from '../data/mockData';
-import { useNews } from '../hooks/useData';
+import QubitAnimation from '../components/QubitAnimation';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const HomePage = () => {
-  const [bannerVisible] = useState(true);
-  const { data: newsData } = useNews();
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    // Subtly parallaxing background shapes
+    gsap.to('.parallax-shape', {
+      yPercent: -20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.5,
+      }
+    });
+
+    // Metric counter animation
+    const metrics = gsap.utils.toArray('.metric-counter');
+    metrics.forEach(metric => {
+      const target = parseFloat(metric.getAttribute('data-target'));
+      const isFloat = target % 1 !== 0;
+      
+      gsap.to(metric, {
+        innerHTML: target,
+        duration: 3,
+        ease: 'power4.out',
+        snap: { innerHTML: isFloat ? 0.1 : 1 },
+        scrollTrigger: {
+          trigger: metric,
+          start: 'top 85%',
+        },
+        onUpdate: function() {
+           metric.innerHTML = Number(this.targets()[0].innerHTML).toFixed(isFloat ? 1 : 0);
+        }
+      });
+    });
+
+    // Continuous abstract rotation
+    gsap.to('.spin-slow', {
+      rotation: 360,
+      duration: 50,
+      repeat: -1,
+      ease: 'linear'
+    });
+
+    // Subtle image zoom on scroll
+    gsap.to('.vision-image', {
+      scale: 1.05,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.vision-section',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      }
+    });
+
+  }, { scope: containerRef });
 
   return (
     <>
       <Helmet>
-        <title>Natilah</title>
-        <meta name="description" content="Natilah builds Quasar, a quantum-inspired scheduler that achieves 72% win rate against 11 production schedulers. Mean +16.2% makespan reduction, never worse than FIFO." />
-        <meta property="og:title" content="Natilah — Quantum-Inspired GPU Scheduling" />
-        <meta property="og:description" content="Quasar optimizes GPU datacenters with quantum-inspired algorithms. Benchmarked against 11 production schedulers across 132 matchups." />
-        <meta property="og:url" content="https://natilah.com/" />
-        <link rel="canonical" href="https://natilah.com/" />
+        <title>Natilah | Frontier Computing Infrastructure</title>
+        <meta name="description" content="Next-generation computational scheduling and orchestration for extreme-scale clusters." />
       </Helmet>
-      <div className="relative">
-        <HeroSection data={heroData} missionData={missionData} bannerVisible={bannerVisible} />
-      </div>
 
-      {/* Approach Preview */}
-      <section className="relative bg-black py-28 md:py-40 lg:py-48 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground
-          particleCount={12}
-          connectDistance={130}
-          speed={0.25}
-          opacity={0.25}
-          colorScheme="white"
-        />
-        <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
-          <p className="text-white/40 text-base lg:text-lg font-light tracking-widest uppercase mb-8 lg:mb-6">The future of tech</p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-[1.2] tracking-tight mb-20 lg:mb-16 max-w-2xl lg:max-w-4xl">
-            Quantum ready
-          </h2>
+      <div ref={containerRef} className="relative bg-[#FAFAFA] text-slate-800 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-hidden">
+        
+        {/* Ambient global shapes */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="parallax-shape absolute top-[20%] left-[-10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-gradient-to-tr from-blue-100/40 to-blue-50/10 blur-[100px] mix-blend-multiply" />
+          <div className="parallax-shape absolute top-[60%] right-[-10%] w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] rounded-full bg-gradient-to-bl from-teal-50/40 to-cyan-100/20 blur-[120px] mix-blend-multiply" />
+        </div>
 
-          {/* Image and Text Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Image Display */}
-            <div className="relative overflow-hidden">
-              <img
-                src="/images/quantum-computer.jpg"
-                alt="Quantum Disc"
-                className="w-full h-[500px] object-cover transition-all duration-500"
-              />
+        {/* 1. Hero Section */}
+        <HeroSection data={{ heading: '', description: '', ctaLink: '', ctaText: '' }} bannerVisible={true} />
+
+        {/* 3. Platform & Technology Section */}
+        <section className="relative z-10 py-16 md:py-24 px-6 md:px-12 bg-white/60 backdrop-blur-3xl border-t border-slate-200/50">
+          <div className="max-w-[1440px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 mb-0 items-center">
+              <div className="reveal-up max-w-4xl">
+                
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-slate-900 leading-[1.1] tracking-tight mb-8">
+                  The Future of Scheduling<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] to-[#ffca55]">Quasar</span>
+                </h2>
+                <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed">
+                  Natilah's techonolgy uses quantum-inspired algorithms and common quantum language to orchestrate classical hardware at unprecedented scales, unlocking new frontiers of performance.
+                </p>
+              </div>
+              <div className="reveal-up w-full flex justify-center lg:justify-end">
+                 <QubitAnimation />
+              </div>
             </div>
+          </div>
+        </section>
 
-            {/* Text Content */}
-            <div className="flex flex-col gap-8">
-              <h3 className="text-white text-xl lg:text-2xl font-light mb-6">
-                {scalingData.items[2].title}
-              </h3>
-              <p className="text-white/60 text-base lg:text-lg font-light leading-relaxed mb-6">
-                {scalingData.items[2].description}
-              </p>
+        {/* 6. Vision / Storytelling */}
+        <section className="vision-section relative z-10 py-32 md:py-48 px-6 md:px-12 bg-white border-y border-slate-200/60 overflow-hidden">
+          <div className="max-w-[1440px] mx-auto">
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <div className="order-2 lg:order-1 rounded-[2.5rem] overflow-hidden aspect-[4/5] lg:aspect-square relative shadow-2xl bg-slate-100 reveal-up">
+                  <video 
+                    className="vision-image absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-80 scale-[1.0]"
+                    autoPlay muted loop playsInline
+                    src="/videos/hallway.mp4" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-10 left-10 right-10">
+                    <div className="p-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl text-white">
+                      <p className="font-light leading-relaxed mb-4 text-2xl">"The constraints of physics are the canvas on which we build the next generation of thought."</p>
+                      <p className="text-white/60 font-medium tracking-wide uppercase text-sm">Natilah Vision</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="order-1 lg:order-2 reveal-up">
+                  <p className="text-[#ffca55] font-medium tracking-widest uppercase mb-8 text-sm">Quantum Thinking</p>
+                  <h2 className="text-4xl md:text-5xl font-light text-slate-900 leading-[1.1] tracking-tight mb-8">
+                    Designing the nervous <br className="hidden lg:block"/>system for AI.
+                  </h2>
+                  <div className="space-y-6 text-lg md:text-xl text-slate-500 font-light leading-relaxed">
+                    <p>
+                      At the frontier of computing, the bottleneck is no longer just FLOPs. It's the orchestration, the physical distance between memory and processors, and the statistical likelihood of idle queues. 
+                    </p>
+                    <p>
+                      We are completely rethinking the stack by moving intelligence closer to the metal. Natilah enables hardware-fluid deployments ensuring the world's most brilliant minds never have to wait on infrastructure.
+                    </p>
+                  </div>
+                  <div className="mt-12">
+                    <Link to="/about" className="inline-flex items-center gap-3 text-[#ffca55] font-medium hover:text-blue-600 transition-colors group">
+                      Learn about our mission
+                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* 7. Final CTA */}
+        <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 bg-gradient-to-b from-slate-50 to-white text-center">
+          <div className="max-w-[1000px] mx-auto reveal-up">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-slate-900 tracking-tight leading-[1.05] mb-10">
+              Build on the <br className="hidden sm:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffca55] to-[#ffca55]">cutting edge.</span>
+            </h2>
+            <p className="text-xl text-slate-500 font-light mb-14 max-w-2xl mx-auto leading-relaxed">
+              Step into a new era of performance. Join the researchers, enterprise scaling teams, and visionaries optimizing with Natilah.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
-                to="/technology"
-                className="inline-flex items-center gap-2 text-white text-base lg:text-lg font-light group/link"
+                to="/contact"
+                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-slate-900 text-white font-medium rounded-full hover:bg-black hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 text-lg flex items-center justify-center gap-2 group"
               >
-                Learn more
-                <ArrowRight size={20} className="group-hover/link:translate-x-1 transition-transform duration-300" />
+                Request Access <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                to="/docs"
+                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-white border border-slate-200 text-slate-700 font-medium rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 text-lg flex items-center justify-center"
+              >
+                Read Documentation
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Infrastructure Preview */}
-      <section className="relative bg-black py-28 md:py-40 lg:py-48 border-t border-white/[0.06] overflow-visible">
-        <QuantumBackground
-          particleCount={8}
-          connectDistance={100}
-          speed={0.15}
-          opacity={0.25}
-          colorScheme="purple"
-        />
-        {/* Globe Background - Right Side */}
-        <div className="hidden lg:block absolute right-0 opacity-70 pointer-events-none" style={{ zIndex: 0, width: '1800px', height: '1800px', marginRight: '-500px', top: '70%', transform: 'translateY(-50%)' }}>
-          <GlobeAnimation />
-        </div>
-        <div className="relative z-10 w-full lg:max-w-[70%] lg:ml-0 px-6 md:px-12">
-          {/* Header - Left Aligned */}
-          <div className="text-left mb-8 lg:mb-12 ml-0 lg:ml-32">
-            <p className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-6">MULTI-OBJECTIVE · VS PRODUCTION AVG</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-[1.1] tracking-tight mb-8">
-              Six goal simultaneous optimization
-            </h2>
-          </div>
-
-          {/* Six Goals Containers - Left Aligned */}
-          <div className="flex flex-wrap justify-start gap-2 lg:gap-3 mb-16 lg:mb-20 px-6 md:px-12 ml-0 lg:ml-16">
-            {[
-              'Makespan optimization',
-              'Job completion speed',
-              'Minimize wait time',
-              'Fairness & equity',
-              'SLA compliance',
-              'Priority fidelity'
-            ].map((goal) => (
-              <div key={goal} className="p-3 lg:p-4 border border-white/[0.1]">
-                <p className="text-white text-xs lg:text-sm font-light">{goal}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Main Layout - Metrics Left, Comparison Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 lg:ml-32">
-            {/* Left: Metrics (double column) */}
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:gap-y-10 pr-0 lg:pr-12">
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">Makespan</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">33%</p>
-                <p className="text-white/60 text-xs lg:text-sm font-light">faster</p>
-              </div>
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">Avg job completion</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">34%</p>
-                <p className="text-white/60 text-xs lg:text-sm font-light">lower</p>
-              </div>
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">Wait time</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">55%</p>
-                <p className="text-white/60 text-xs lg:text-sm font-light">lower</p>
-              </div>
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">Fairness</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">+1.1%</p>
-              </div>
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">SLA violations</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">26%</p>
-                <p className="text-white/60 text-xs lg:text-sm font-light">fewer</p>
-              </div>
-              <div className="pb-6 lg:pb-8">
-                <p className="text-white/50 text-xs lg:text-sm font-light mb-3">Priority fidelity</p>
-                <p className="text-white text-3xl lg:text-4xl font-light">+1.6%</p>
-              </div>
-            </div>
-
-            {/* Right: Comparison Section */}
-            <div className="relative pl-0 lg:pl-0 lg:-ml-40">
-              {/* Gradient divider line */}
-              <div className="absolute -left-6 lg:-left-12 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
-              <p className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-8">Outperforms production/research schedulers</p>
-              <p className="text-white text-lg lg:text-xl font-light mb-10">Composite 6-dimensional score</p>
-
-              <div className="grid grid-cols-2 gap-3 lg:gap-4 mb-12">
-                {['Volcano', 'Run:ai', 'K8sBinpack', 'Yunikorn', 'BFD', 'RoundRobin', 'Tiresias', 'Gandiva'].map((scheduler) => (
-                  <div key={scheduler} className="py-3">
-                    <p className="text-white text-sm lg:text-base font-light">{scheduler}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-white/40 text-xs font-light">Measured with oracle job durations from published traces</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* News Preview */}
-      <section className="relative bg-black py-28 md:py-40 lg:py-48 border-t border-white/[0.06] overflow-hidden quantum-grid">
-        <QuantumBackground
-          particleCount={6}
-          connectDistance={110}
-          speed={0.2}
-          opacity={0.25}
-          colorScheme="cyan"
-        />
-        <div className="relative z-10 w-full lg:max-w-[70%] lg:mx-auto px-6 md:px-12">
-          <div className="flex items-center justify-between mb-20 lg:mb-28">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-[1.2] tracking-tight">
-              Latest news
-            </h2>
-            <Link
-              to="/news"
-              className="hidden md:inline-flex items-center gap-2 text-white/60 text-base lg:text-lg font-light hover:text-white transition-colors duration-300 group"
-            >
-              View all news
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-            {newsData.map((item) => (
-              <article key={item.id} className="group">
-                <p className="text-white/30 text-sm lg:text-base font-light mb-6">{item.date}</p>
-                <h3 className="text-white text-lg lg:text-xl font-normal leading-snug mb-6">
-                  <Link to="/news">{item.title}</Link>
-                </h3>
-                <p className="text-white/40 text-base lg:text-lg font-light leading-relaxed mb-6 line-clamp-3">{item.excerpt}</p>
-                <Link
-                  to="/news"
-                  className="inline-flex items-center gap-2 text-white text-base lg:text-lg font-light group/link"
-                >
-                  Read More
-                  <ArrowRight size={20} className="group-hover/link:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </article>
-            ))}
-          </div>
-          <Link
-            to="/news"
-            className="md:hidden inline-flex items-center gap-2 text-white/60 text-base font-light hover:text-white transition-colors duration-300 group mt-12"
-          >
-            View all news
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
-          </Link>
-        </div>
-      </section>
+      </div>
     </>
   );
 };

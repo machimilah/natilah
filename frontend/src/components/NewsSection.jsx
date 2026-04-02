@@ -46,13 +46,13 @@ const NewsSection = ({ data }) => {
                 {item.date}
               </p>
               <h3 className="text-white text-[15px] font-normal leading-snug mb-4 group-hover:text-gray-300 transition-colors duration-300">
-                <a href={item.linkUrl}>{item.title}</a>
+                <a href={`/news/${item.id}`}>{item.title}</a>
               </h3>
               <p className="text-white/40 text-sm font-light leading-relaxed mb-4 line-clamp-3">
                 {item.excerpt}
               </p>
               <a
-                href={item.linkUrl}
+                href={`/news/${item.id}`}
                 className="inline-flex items-center gap-2 text-white text-sm font-light hover:text-gray-300 transition-colors duration-300 group/link"
               >
                 Read More

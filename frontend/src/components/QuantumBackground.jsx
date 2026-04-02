@@ -8,7 +8,6 @@ const QuantumBackground = ({
   traceCount = 6,
 }) => {
   const canvasRef = useRef(null);
-  const stateRef = useRef({ particles: [], traces: [] });
   const animFrameRef = useRef(null);
 
   const getColor = useCallback((index) => {
@@ -18,18 +17,18 @@ const QuantumBackground = ({
   const buildTraces = useCallback((w, h) => {
     const traces = [];
 
-    // Mostly horizontal traces spanning the full width
-    const hCount = Math.max(4, traceCount);
+    // Static horizontal traces with quantum nodes
+    const hCount = Math.max(3, traceCount);
     for (let i = 0; i < hCount; i++) {
-      const y = (h / (hCount + 1)) * (i + 1) + (Math.random() - 0.5) * (h / (hCount + 1)) * 0.3;
-      traces.push({ y, dir: 'h' });
+      const y = (h / (hCount + 1)) * (i + 1);
+      traces.push({ y, dir: 'h', x1: 0, x2: w });
     }
 
-    // A few vertical connectors so photons can drift between lanes
+    // A few vertical connectors
     const vCount = Math.max(2, Math.floor(traceCount * 0.35));
     for (let i = 0; i < vCount; i++) {
-      const x = (w / (vCount + 1)) * (i + 1) + (Math.random() - 0.5) * (w / (vCount + 1)) * 0.4;
-      traces.push({ x, dir: 'v' });
+      const x = (w / (vCount + 1)) * (i + 1);
+      traces.push({ x, dir: 'v', y1: 0, y2: h });
     }
 
     return traces;
@@ -40,22 +39,17 @@ const QuantumBackground = ({
     const hTraces = traces.filter(t => t.dir === 'h');
     const trace = hTraces[Math.floor(Math.random() * hTraces.length)];
 
-    // Always start from the left edge (or near it) and move right
     return {
-      x: -Math.random() * 60,
-      y: trace.y + (Math.random() - 0.5) * 4,
-      vx: speed * (0.6 + Math.random() * 0.6),   // always rightward, varied speed
+      x: Math.random() * w,
+      y: trace.y,
+      vx: 0,
       vy: 0,
       baseY: trace.y,
       color,
-      radius: 1.0 + Math.random() * 0.7,
+      radius: 0.8,
       trail: [],
-      trailLength: 25 + Math.floor(Math.random() * 30),
-      laneChangeTimer: 80 + Math.floor(Math.random() * 200),
-      accelerationTimer: 0,
-      accelerationPhase: 0,
     };
-  }, [speed, getColor]);
+  }, [getColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -73,150 +67,85 @@ const QuantumBackground = ({
       canvas.style.height = h + 'px';
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-      const traces = buildTraces(w, h);
-      const particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        const p = spawnPhoton(traces, i, w, h);
-        // Stagger initial positions across the screen width for first render
-        p.x = Math.random() * w;
-        particles.push(p);
-      }
-      stateRef.current = { particles, traces };
+      // Render static grid immediately
+      renderStatic(ctx, w, h);
     };
 
-    const animate = () => {
+    const renderStatic = (ctx, w, h) => {
       ctx.clearRect(0, 0, w, h);
-      const { particles, traces } = stateRef.current;
-      const hTraces = traces.filter(t => t.dir === 'h');
-      const vTraces = traces.filter(t => t.dir === 'v');
 
-      // Draw horizontal trace lines — very faint
-      for (const t of hTraces) {
+      // Draw datacenter grid pattern
+      const gridSize = 200;
+      ctx.strokeStyle = `rgba(100, 200, 255, ${opacity * 0.15})`;
+      ctx.lineWidth = 0.5;
+
+      // Vertical lines
+      for (let x = 0; x <= w; x += gridSize) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.12})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(0, t.y);
-        ctx.lineTo(w, t.y);
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
         ctx.stroke();
       }
 
-      // Draw vertical connector lines — even fainter
-      for (const t of vTraces) {
+      // Horizontal lines
+      for (let y = 0; y <= h; y += gridSize) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.06})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(t.x, 0);
-        ctx.lineTo(t.x, h);
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
         ctx.stroke();
       }
 
-      // Update & draw photons
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        // Store trail position
-        p.trail.push({ x: p.x, y: p.y });
-        if (p.trail.length > p.trailLength) p.trail.shift();
-
-        // Acceleration phases
-        p.accelerationTimer--;
-        if (p.accelerationTimer <= 0) {
-          // Start new acceleration phase
-          p.accelerationPhase = Math.random() < 0.5 ? 1 : -1; // 1 for acceleration, -1 for deceleration
-          p.accelerationTimer = 30 + Math.floor(Math.random() * 80);
+      // Draw quantum nodes at intersections
+      const nodeSize = 2;
+      ctx.fillStyle = `rgba(100, 200, 255, ${opacity * 0.4})`;
+      for (let x = 0; x <= w; x += gridSize) {
+        for (let y = 0; y <= h; y += gridSize) {
+          ctx.fillRect(x - nodeSize / 2, y - nodeSize / 2, nodeSize, nodeSize);
         }
-
-        // Apply acceleration based on current phase
-        const accelerationAmount = p.accelerationPhase * 0.002;
-        p.vx += accelerationAmount;
-        // Cap the speed to reasonable bounds
-        p.vx = Math.max(speed * 0.3, Math.min(p.vx, speed * 1.5));
-
-        // Move — predominantly right
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Gradually return to the nearest horizontal lane
-        if (Math.abs(p.vy) < 0.01) {
-          // Smoothly settle onto baseY
-          const diff = p.baseY - p.y;
-          if (Math.abs(diff) > 0.5) {
-            p.y += diff * 0.03;
-          }
-        }
-
-        // Lane change: occasionally drift to a different horizontal trace
-        p.laneChangeTimer--;
-        if (p.laneChangeTimer <= 0) {
-          // Check if near a vertical connector
-          let nearV = false;
-          for (const vt of vTraces) {
-            if (Math.abs(p.x - vt.x) < 20) { nearV = true; break; }
-          }
-          if (nearV && Math.random() < 0.35) {
-            // Pick a new horizontal lane
-            const newTrace = hTraces[Math.floor(Math.random() * hTraces.length)];
-            const dy = newTrace.y - p.y;
-            p.vy = dy * 0.02; // gentle vertical drift
-            p.baseY = newTrace.y;
-            // Slow down horizontal slightly during transition
-            p.vx *= 0.85;
-          }
-          p.laneChangeTimer = 100 + Math.floor(Math.random() * 250);
-        }
-
-        // Dampen vertical velocity over time
-        p.vy *= 0.97;
-
-        // Respawn when off the right edge
-        if (p.x > w + 60) {
-          const newP = spawnPhoton(traces, i, w, h);
-          Object.assign(p, newP);
-          continue;
-        }
-
-        // Draw trail — fading left
-        if (p.trail.length > 1) {
-          for (let t = 1; t < p.trail.length; t++) {
-            const progress = t / p.trail.length;
-            const a = progress * opacity * 0.5;
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${a})`;
-            ctx.lineWidth = p.radius * progress * 0.7;
-            ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
-            ctx.lineTo(p.trail[t].x, p.trail[t].y);
-            ctx.stroke();
-          }
-        }
-
-        // Draw photon glow
-        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 5);
-        grd.addColorStop(0, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${opacity * 0.85})`);
-        grd.addColorStop(0.3, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${opacity * 0.25})`);
-        grd.addColorStop(1, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0)`);
-        ctx.beginPath();
-        ctx.fillStyle = grd;
-        ctx.arc(p.x, p.y, p.radius * 5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Bright core
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${Math.min(p.color.r + 50, 255)}, ${Math.min(p.color.g + 50, 255)}, ${Math.min(p.color.b + 50, 255)}, ${opacity * 1.2})`;
-        ctx.arc(p.x, p.y, p.radius * 0.7, 0, Math.PI * 2);
-        ctx.fill();
       }
 
-      animFrameRef.current = requestAnimationFrame(animate);
+      // Draw connecting photon lines (static paths)
+      ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.08})`;
+      ctx.lineWidth = 0.3;
+      const traces = buildTraces(w, h);
+      
+      for (const trace of traces) {
+        ctx.beginPath();
+        if (trace.dir === 'h') {
+          ctx.moveTo(trace.x1, trace.y);
+          ctx.lineTo(trace.x2, trace.y);
+        } else {
+          ctx.moveTo(trace.x, trace.y1);
+          ctx.lineTo(trace.x, trace.y2);
+        }
+        ctx.stroke();
+      }
+
+      // Draw subtle photon nodes along paths
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.15})`;
+      const photonNodeSize = 1.2;
+      for (const trace of traces) {
+        if (trace.dir === 'h') {
+          for (let x = trace.x1; x <= trace.x2; x += 60) {
+            ctx.fillRect(x - photonNodeSize / 2, trace.y - photonNodeSize / 2, photonNodeSize, photonNodeSize);
+          }
+        } else {
+          for (let y = trace.y1; y <= trace.y2; y += 60) {
+            ctx.fillRect(trace.x - photonNodeSize / 2, y - photonNodeSize / 2, photonNodeSize, photonNodeSize);
+          }
+        }
+      }
     };
 
     resize();
-    animate();
     window.addEventListener('resize', resize);
     return () => {
       window.removeEventListener('resize', resize);
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const animationFrameId = animFrameRef.current;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [buildTraces, spawnPhoton, particleCount, opacity, speed]);
+  }, [buildTraces, opacity]);
 
   return (
     <canvas

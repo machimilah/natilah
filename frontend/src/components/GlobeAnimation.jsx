@@ -27,7 +27,8 @@ const GlobeAnimation = () => {
       0.1,
       1000
     );
-    camera.position.z = 22;
+    camera.position.set(0, 0, 26);
+    camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
