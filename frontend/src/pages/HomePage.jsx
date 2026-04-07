@@ -128,7 +128,7 @@ const HomePage = () => {
                   Designing the nervous system for AI.
                 </h2>
               </div>
-              
+
               {/* Right Column: Description */}
               <div className="flex flex-col h-full justify-between">
                 <div className="space-y-6 text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">

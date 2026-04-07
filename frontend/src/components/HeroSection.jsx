@@ -57,6 +57,15 @@ const HeroSection = () => {
 
           {/* Main Copy */}
           <div className="flex flex-col items-center text-center pt-24 md:pt-36 max-w-4xl mx-auto">
+            
+            <style>{`
+              @keyframes shimmerMetal {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+            `}</style>
+
             {/* Real CSS 3D Body Representation */}
             <div className="relative perspective-[1200px] mb-12 flex justify-center" style={{ WebkitPerspective: "1200px" }}>
               <div
@@ -66,13 +75,15 @@ const HeroSection = () => {
                   transform: "rotateX(0deg) rotateY(0deg)"
                 }}
               >
-                {/* Front Face (Silver Reflective Panel) */}
+                {/* Front Face (Mid-Dark Animated Silver Reflective Panel) */}
                 <h1
                   className="relative z-50 text-7xl sm:text-8xl md:text-9xl font-bold tracking-tighter mix-blend-normal"
                   style={{
                     fontFamily: "'Montserrat', sans-serif",
                     transform: "translateZ(0px)",
-                    backgroundImage: "linear-gradient(to bottom, #ffffff 0%, #cbd5e1 35%, #64748b 48%, #e2e8f0 52%, #f8fafc 85%, #ffffff 100%)",
+                    backgroundImage: "linear-gradient(110deg, #94a3b8 0%, #cbd5e1 25%, #475569 50%, #94a3b8 75%, #f1f5f9 100%)",
+                    backgroundSize: "200% auto",
+                    animation: "shimmerMetal 6s ease-in-out infinite",
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -90,8 +101,8 @@ const HeroSection = () => {
                     style={{
                       fontFamily: "'Montserrat', sans-serif",
                       transform: `translateZ(-${i + 1}px)`,
-                      color: i % 2 === 0 ? "#64748b" : "#475569", // Striped metallic texture
-                      textShadow: i === 39 ? "0px 30px 40px rgba(0,0,0,0.6)" : "none", // Root shadow
+                      color: i % 3 === 0 ? "#94a3b8" : (i % 2 === 0 ? "#475569" : "#334155"), // Mid-tone grooved metallic accent
+                      textShadow: i === 39 ? "0px 30px 40px rgba(0,0,0,0.5)" : "none", // Root shadow
                     }}
                   >
                     Quasar
