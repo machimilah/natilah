@@ -42,7 +42,7 @@ html {
 
 /* Selection color */
 ::selection {
-  background: rgba(16, 185, 129, 0.3);
+  background: rgba(255, 255, 255, 0.15);
   color: white;
 }
 

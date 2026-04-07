@@ -14,7 +14,7 @@ const BinaryTicker = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center font-mono font-bold tracking-[0.15em] text-[#ffca55] leading-none text-[10px]">
+    <div className="flex flex-col items-center justify-center font-mono font-bold tracking-[0.15em] text-white leading-none text-[10px]">
       <span>{bits.slice(0, 2)}</span>
       <span>{bits.slice(2, 4)}</span>
     </div>

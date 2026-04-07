@@ -1,180 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Quantum Earth - Bright Front View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quasar Flow - Right to Left</title>
     <style>
-        body { margin: 0; background-color: #000; overflow: hidden; }
-        canvas { display: block; width: 100vw; height: 100vh; }
-        .hud {
+        :root {
+            --bg-color: #020205;
+            --glow-color: rgba(60, 130, 255, 0.6);
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            color: white;
+        }
+
+        /* The Canvas handles the volumetric smoke flowing right to left */
+        #smokeCanvas {
             position: absolute;
-            top: 40px;
-            left: 40px;
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            font-size: 10px;
-            letter-spacing: 3px;
-            opacity: 0.6; /* Increased HUD visibility to match */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* The Quasar Core
+           Anchored to the far right edge, slightly off-screen for a massive feel 
+        */
+        .quasar-core {
+            position: absolute;
+            top: 50%;
+            right: -10vw;
+            /* Pushed partially off-screen */
+            transform: translateY(-50%);
+            width: 25vw;
+            height: 25vw;
+            background: radial-gradient(circle, #ffffff 2%, #88ccff 15%, #2255ff 40%, transparent 70%);
+            border-radius: 50%;
+            box-shadow:
+                0 0 150px 50px rgba(100, 150, 255, 0.3),
+                -50px 0 200px 80px rgba(50, 100, 255, 0.2);
+            z-index: 2;
             pointer-events: none;
+        }
+
+        /* Typography Container
+           Anchored to the left side 
+        */
+        .text-container {
+            position: absolute;
+            top: 50%;
+            left: 10vw;
+            transform: translateY(-50%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 10vw;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -0.2vw;
+            /* Tighter letter spacing for modern tech look */
+            color: #ffffff;
+            /* High quality metallic/glass reflection gradient */
+            background: linear-gradient(180deg, #ffffff 0%, #b3d4ff 40%, #4a88e8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 30px var(--glow-color));
+            line-height: 1;
+        }
+
+        .subtitle {
+            color: #88ccff;
+            letter-spacing: 0.4vw;
+            font-size: 1.5vw;
+            font-weight: 300;
+            margin-top: 10px;
+            opacity: 0.9;
+            margin-left: 0.5vw;
         }
     </style>
 </head>
+
 <body>
-    <div class="hud">VIEWPORT_LOCK: FRONT_HEMISPHERE<br>LUMINANCE: BOOSTED<br>JUMP_STATE: VISIBLE_ONLY</div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <canvas id="smokeCanvas"></canvas>
+
+    <div class="quasar-core"></div>
+
+    <div class="text-container">
+        <h1>QUASAR</h1>
+        <div class="subtitle">STELLAR ENGINE VISUALIZATION</div>
+    </div>
 
     <script>
-        let scene, camera, renderer, globeGroup, worldGroup, photonGroup, ripple;
-        let landCoords = []; 
-        let timer = 0;
-        let isWaiting = true; 
-        const trailDots = 25;
+        const canvas = document.getElementById('smokeCanvas');
+        const ctx = canvas.getContext('2d');
 
-        init();
+        let width, height;
+        let particles = [];
 
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 22;
-
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            document.body.appendChild(renderer.domElement);
-
-            globeGroup = new THREE.Group();
-            worldGroup = new THREE.Group();
-            globeGroup.add(worldGroup);
-            globeGroup.rotation.z = 0.41; // Axial Tilt
-            scene.add(globeGroup);
-
-            fetch('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson')
-                .then(res => res.json())
-                .then(data => {
-                    processLand(data);
-                    setupElements();
-                    setTimeout(jump, 1000);
-                    animate();
-                });
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         }
 
-        function processLand(data) {
-            const radius = 7;
-            const positions = [];
-            data.features.forEach(feature => {
-                feature.geometry.coordinates.forEach(polygon => {
-                    const points = Array.isArray(polygon[0][0]) ? polygon[0] : polygon;
-                    points.forEach(coord => {
-                        const phi = (90 - coord[1]) * (Math.PI / 180);
-                        const theta = (coord[0] + 180) * (Math.PI / 180);
-                        const v = new THREE.Vector3(
-                            -(radius * Math.sin(phi) * Math.cos(theta)),
-                            radius * Math.cos(phi),
-                            radius * Math.sin(phi) * Math.sin(theta)
-                        );
-                        positions.push(v.x, v.y, v.z);
-                        landCoords.push(v);
-                    });
-                });
-            });
+        window.addEventListener('resize', resize);
+        resize();
 
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            
-            // --- BRIGHTNESS BOOSTED HERE ---
-            const material = new THREE.PointsMaterial({ 
-                color: 0xffffff, 
-                size: 0.045, 
-                transparent: true, 
-                opacity: 0.85, // Increased from 0.4
-                blending: THREE.AdditiveBlending // Makes overlapping dots much brighter
-            });
-            
-            worldGroup.add(new THREE.Points(geometry, material));
-        }
-
-        function setupElements() {
-            photonGroup = new THREE.Group();
-            for(let i = 0; i < trailDots; i++) {
-                const pMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 - (i/trailDots) });
-                const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.12 * (1 - i/trailDots), 8, 8), pMat);
-                photonGroup.add(pMesh);
+        class Particle {
+            constructor() {
+                this.reset();
             }
-            const light = new THREE.PointLight(0xffffff, 4, 8);
-            photonGroup.add(light);
-            photonGroup.visible = false;
-            worldGroup.add(photonGroup);
 
-            const ringGeom = new THREE.RingGeometry(0.1, 0.15, 32);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0 });
-            ripple = new THREE.Mesh(ringGeom, ringMat);
-            worldGroup.add(ripple);
-        }
+            reset() {
+                // SPATIAL ORIGIN: Start at the far right of the screen (the Quasar core)
+                this.x = width;
+                this.y = height / 2;
 
-        function jump() {
-            if (landCoords.length < 2) return;
+                // VELOCITY: Push strongly to the LEFT (negative X)
+                this.vx = -(Math.random() * 8 + 3);
+                // Slight vertical spread
+                this.vy = (Math.random() - 0.5) * 3;
 
-            const visibleLand = landCoords.filter(v => {
-                const worldPos = v.clone().applyMatrix4(worldGroup.matrixWorld);
-                return worldPos.z > 5; 
-            });
+                this.life = 1;
+                this.decay = Math.random() * 0.004 + 0.001;
 
-            const targetPool = visibleLand.length > 5 ? visibleLand : landCoords;
-            const start = targetPool[Math.floor(Math.random() * targetPool.length)];
-            const end = targetPool[Math.floor(Math.random() * targetPool.length)];
-            
-            const mid = start.clone().lerp(end, 0.5).normalize().multiplyScalar(11);
-            const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-            
-            photonGroup.userData.curve = curve;
-            photonGroup.userData.endPos = end;
-            
-            timer = 0;
-            isWaiting = false;
-            photonGroup.visible = true;
-        }
+                // Size: start small near the star, grow massive as it blows left
+                this.size = Math.random() * 10 + 5;
+                this.maxSize = Math.random() * 150 + 60;
 
-        function animate() {
-            requestAnimationFrame(animate);
-            worldGroup.rotation.y += 0.003;
-            worldGroup.updateMatrixWorld();
+                // Color mapping: Inner core is white/cyan, cooling down to deep blue
+                const hue = 200 + Math.random() * 50;
+                this.color = `hsl(${hue}, 100%, 70%)`;
+            }
 
-            if (!isWaiting && photonGroup.userData.curve) {
-                timer += 0.055; 
+            update() {
+                // WIND TUNNEL MATH: Sine wave based on X position creates the rippling effect
+                this.y += Math.sin(this.x * 0.004) * 4;
 
-                if (timer >= 1) {
-                    isWaiting = true;
-                    photonGroup.visible = false;
-                    
-                    ripple.position.copy(photonGroup.userData.endPos);
-                    ripple.lookAt(new THREE.Vector3(0,0,0)); 
-                    ripple.scale.set(1, 1, 1);
-                    ripple.material.opacity = 1;
+                this.x += this.vx;
+                this.y += this.vy;
 
-                    setTimeout(jump, 1000);
-                } else {
-                    for(let i = 0; i < trailDots; i++) {
-                        const tOffset = Math.max(0, timer - (i * 0.004));
-                        const pos = photonGroup.userData.curve.getPoint(tOffset);
-                        photonGroup.children[i].position.copy(pos);
-                    }
+                this.life -= this.decay;
+
+                // Smoke expands as it travels further away from the star
+                if (this.size < this.maxSize) {
+                    this.size += 0.8;
+                }
+
+                // Recycle particle if it dies or goes off the left edge
+                if (this.life <= 0 || this.x < -150) {
+                    this.reset();
                 }
             }
 
-            if (ripple.material.opacity > 0) {
-                ripple.scale.multiplyScalar(1.1);
-                ripple.material.opacity -= 0.04;
-            }
+            draw() {
+                // Low opacity for the soft, layered smoke look
+                ctx.globalAlpha = this.life * 0.1;
+                ctx.fillStyle = this.color;
 
-            renderer.render(scene, camera);
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        // Initialize particles
+        for (let i = 0; i < 600; i++) {
+            particles.push(new Particle());
+            // Fast-forward so the smoke is already flowing when the page loads
+            for (let j = 0; j < Math.random() * 200; j++) {
+                particles[i].update();
+            }
+        }
+
+        function animate() {
+            // Dark motion blur trail
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = 'rgba(2, 2, 5, 0.3)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Additive blending for the glowing, high-energy plasma look
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
     </script>
 </body>
+
 </html>

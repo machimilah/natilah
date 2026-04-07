@@ -24,7 +24,7 @@ const Navbar = ({ links }) => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
         isScrolled
-          ? 'bg-white/70 backdrop-blur-xl border-slate-200/60 shadow-[0_4px_30px_-10px_rgba(0,0,0,0.05)]'
+          ? 'bg-black/80 backdrop-blur-xl border-white/[0.06] shadow-[0_4px_30px_-10px_rgba(0,0,0,0.4)]'
           : 'bg-transparent border-transparent'
       }`}
     >
@@ -38,7 +38,7 @@ const Navbar = ({ links }) => {
             <img
               src="/images/natilahlonglogobg.png"
               alt="Natilah Technologies"
-              className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3"
+              className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
             />
           </Link>
 
@@ -50,13 +50,13 @@ const Navbar = ({ links }) => {
                   to={link.href}
                   className={`text-sm tracking-widest uppercase font-semibold transition-colors duration-300 relative group whitespace-nowrap ${
                     location.pathname === link.href
-                      ? 'text-[#ffca55]'
-                      : 'text-slate-500 hover:text-slate-900'
+                      ? 'text-white'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   {link.label}
                   <span
-                    className={`absolute -bottom-1.5 left-0 h-[2px] bg-blue-600 transition-all duration-300 ${
+                    className={`absolute -bottom-1.5 left-0 h-[2px] bg-white transition-all duration-300 ${
                       location.pathname === link.href
                         ? 'w-full'
                         : 'w-0 group-hover:w-full'
@@ -64,7 +64,7 @@ const Navbar = ({ links }) => {
                   />
                 </Link>
                 {index < links.length - 1 && (
-                  <span className="text-slate-300 mx-5 text-sm font-light">/</span>
+                  <span className="text-slate-600 mx-5 text-sm font-light">/</span>
                 )}
               </React.Fragment>
             ))}
@@ -74,7 +74,7 @@ const Navbar = ({ links }) => {
           <div className="hidden lg:flex items-center invisible pointer-events-none select-none">
              <Link
                 to="/contact"
-                className="px-5 py-2 bg-slate-900 text-white text-sm font-semibold uppercase tracking-widest rounded-full"
+                className="px-5 py-2 bg-white text-slate-900 text-sm font-semibold uppercase tracking-widest rounded-full"
               >
                 Access Platform
              </Link>
@@ -82,7 +82,7 @@ const Navbar = ({ links }) => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-slate-800 hover:text-[#ffca55] transition-colors duration-300 p-2 -mr-2"
+            className="lg:hidden text-slate-200 hover:text-white transition-colors duration-300 p-2 -mr-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -92,7 +92,7 @@ const Navbar = ({ links }) => {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-2xl border-b border-slate-200 overflow-hidden transition-all duration-400 ${
+          className={`lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/[0.06] overflow-hidden transition-all duration-400 ${
             isMobileMenuOpen ? 'max-h-screen opacity-100 pointer-events-auto' : 'max-h-0 opacity-0 pointer-events-none'
           }`}
         >
@@ -103,8 +103,8 @@ const Navbar = ({ links }) => {
                 to={link.href}
                 className={`block px-4 py-3 text-lg font-medium tracking-wide transition-colors duration-300 rounded-xl ${
                   location.pathname === link.href
-                    ? 'text-[#ffca55] bg-blue-50/50'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    ? 'text-white bg-white/5'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
                 }`}
               >
                 {link.label}

@@ -17,7 +17,6 @@ const NewsArticlePage = () => {
     const fetchArticle = async () => {
       setLoading(true);
 
-      // Try fetching from Supabase if configured
       if (supabase) {
         const { data, error } = await supabase
           .from('news')
@@ -39,7 +38,6 @@ const NewsArticlePage = () => {
         }
       }
 
-      // Fallback to mockData if Supabase fails or isn't connected
       const mockArticle = newsData.find(item => item.id === parseInt(id));
       if (mockArticle) {
         setArticle(mockArticle);
@@ -52,17 +50,17 @@ const NewsArticlePage = () => {
 
   if (loading) {
     return (
-      <div className="pt-32 min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center">
-        <span className="w-8 h-8 rounded-full border-2 border-slate-200 border-t-blue-500 animate-spin"/>
+      <div className="pt-32 min-h-screen bg-black flex flex-col items-center justify-center">
+        <span className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white animate-spin"/>
       </div>
     );
   }
 
   if (!article) {
     return (
-      <div className="pt-32 min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-light text-slate-900 mb-4">Article Not Found</h1>
-        <Link to="/news" className="text-blue-600 hover:text-blue-700 flex items-center gap-2">
+      <div className="pt-32 min-h-screen bg-black flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-light text-white mb-4">Article Not Found</h1>
+        <Link to="/news" className="text-slate-300 hover:text-white flex items-center gap-2">
           <ArrowLeft size={16} /> Back to News
         </Link>
       </div>
@@ -76,12 +74,12 @@ const NewsArticlePage = () => {
         <meta name="description" content={article.excerpt} />
       </Helmet>
 
-      <div className="pt-32 pb-40 min-h-screen bg-[#FAFAFA] selection:bg-blue-100 selection:text-blue-900">
+      <div className="pt-32 pb-40 min-h-screen bg-black selection:bg-white/10 selection:text-white">
 <div className="max-w-[1440px] mx-auto px-6 md:px-12">
 
           <Link
             to="/news"
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors mb-12 font-medium"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-12 font-medium"
           >
             <ArrowLeft size={18} />
             Back to All News
@@ -91,15 +89,15 @@ const NewsArticlePage = () => {
             {/* Left: Main Article Content */}
             <article className="lg:col-span-8">
               <header className="mb-12 md:mb-16">
-                <div className="text-blue-600 font-semibold tracking-wider text-sm uppercase mb-4">
+                <div className="text-slate-400 font-semibold tracking-wider text-sm uppercase mb-4">
                   {article.date}
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-slate-900 leading-[1.1] tracking-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light text-white leading-[1.1] tracking-tight">
                   {article.title}
                 </h1>
               </header>
 
-              <div className="prose prose-lg prose-slate max-w-none prose-p:font-light prose-p:leading-relaxed prose-p:text-slate-600 prose-headings:font-light prose-headings:text-slate-900 prose-a:text-blue-600">
+              <div className="prose prose-lg prose-invert max-w-none prose-p:font-light prose-p:leading-relaxed prose-p:text-slate-400 prose-headings:font-light prose-headings:text-white prose-a:text-slate-300">
                 {article.fullContent.split('\n\n').map((paragraph, index) => (      
                   <p key={index} className="mb-6">{paragraph}</p>
                 ))}
@@ -107,16 +105,16 @@ const NewsArticlePage = () => {
             </article>
 
             {/* Right: Sidebar for More News */}
-            <aside className="lg:col-span-4 relative border-t lg:border-t-0 lg:border-l border-slate-200 pt-16 lg:pt-0 lg:pl-12">
+            <aside className="lg:col-span-4 relative border-t lg:border-t-0 lg:border-l border-white/[0.06] pt-16 lg:pt-0 lg:pl-12">
               <div className="sticky top-32">
-                <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200">
-                  <Rss size={20} className="text-slate-400" />
-                  <h3 className="text-lg font-medium text-slate-900 tracking-wide uppercase">More News</h3>
+                <div className="flex items-center gap-3 mb-8 pb-4 border-b border-white/[0.06]">
+                  <Rss size={20} className="text-slate-500" />
+                  <h3 className="text-lg font-medium text-white tracking-wide uppercase">More News</h3>
                 </div>
 
                 {newsLoading ? (
                   <div className="flex justify-center items-center h-32">
-                    <span className="w-6 h-6 rounded-full border-2 border-slate-200 border-t-blue-500 animate-spin"/>
+                    <span className="w-6 h-6 rounded-full border-2 border-white/10 border-t-white animate-spin"/>
                   </div>
                 ) : (
                   <div className="space-y-10 flex flex-col">
@@ -128,13 +126,13 @@ const NewsArticlePage = () => {
                           <Link 
                             to={`/news/${item.id}`}
                           >
-                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                            <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">
                               {item.date}
                             </div>
-                            <h4 className="text-xl leading-[1.3] font-light text-slate-800 group-hover:text-blue-600 transition-colors mb-4 line-clamp-3">
+                            <h4 className="text-xl leading-[1.3] font-light text-slate-300 group-hover:text-white transition-colors mb-4 line-clamp-3">
                               {item.title}
                             </h4>
-                            <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 group-hover:text-blue-600 transition-all duration-300 group-hover:gap-3">
+                            <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 group-hover:text-white transition-all duration-300 group-hover:gap-3">
                               Read article <ArrowRight size={14} />
                             </div>
                           </Link>

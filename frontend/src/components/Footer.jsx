@@ -5,7 +5,7 @@ import QuantumBackground from './QuantumBackground';
 
 const Footer = ({ data }) => {
   return (
-    <footer className="relative bg-slate-950 pt-20 pb-16 overflow-hidden">
+    <footer className="relative bg-black pt-20 pb-16 overflow-hidden">
       <QuantumBackground particleCount={8} connectDistance={120} speed={0.15} opacity={0.08} colorScheme="white" />
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
