@@ -157,14 +157,13 @@ const HomePage = () => {
           </div>
 
           {/* Contained Image */}
-          <div className="max-w-[1440px] mx-auto px-6 md:px-12">
-            <div className="w-full relative shadow-2xl bg-black reveal-up rounded-[2.5rem] overflow-hidden aspect-video">
+          <div className="max-w-[1024px] mx-auto px-6 md:px-12 mt-12">
+            <div className="w-full relative shadow-2xl bg-black reveal-up overflow-hidden aspect-[2.35/1]">
               <img
-                src="/images/datacenterai.jpg"
-                alt="AI Data Center"
-                className="vision-image w-full h-full object-cover mix-blend-luminosity opacity-80"
+                src="/images/brianpenny-ai-generated-8533600.jpg"
+                alt="Nervous System of AI"
+                className="vision-image w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/60 via-black/20 to-transparent" />
             </div>
           </div>
         </section>
@@ -173,7 +172,7 @@ const HomePage = () => {
         <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 bg-black text-center">
           <div className="max-w-[1000px] mx-auto reveal-up">
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white tracking-tight leading-[1.05] mb-10">
-              Build on the <br className="hidden sm:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">cutting edge.</span>
+              Built on the <br className="hidden sm:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">cutting edge.</span>
             </h2>
             <p className="text-xl text-slate-300 font-light mb-14 max-w-2xl mx-auto leading-relaxed">
               Step into a new era of performance. Join the researchers, enterprise scaling teams, and visionaries optimizing with Natilah.
@@ -186,12 +185,7 @@ const HomePage = () => {
               >
                 Request Access <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                to="/docs"
-                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-transparent border border-slate-700 text-white font-medium rounded-full hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 text-lg flex items-center justify-center"
-              >
-                Read Documentation
-              </Link>
+          
             </div>
           </div>
         </section>

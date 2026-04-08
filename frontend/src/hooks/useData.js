@@ -9,14 +9,30 @@ function useSupabaseTable(table, fallback, orderBy = 'created_at', ascending = f
   useEffect(() => {
     if (!supabase) return;
 
-    supabase
-      .from(table)
-      .select('*')
-      .order(orderBy, { ascending })
-      .then(({ data: rows, error }) => {
-        if (!error && rows && rows.length > 0) setData(rows);
-        setLoading(false);
-      });
+    const fetchData = () => {
+      supabase
+        .from(table)
+        .select('*')
+        .order(orderBy, { ascending })
+        .then(({ data: rows, error }) => {
+          if (!error && Array.isArray(rows)) setData(rows);
+          setLoading(false);
+        });
+    };
+
+    fetchData();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel(`${table}_changes`)
+      .on('postgres_changes', { event: '*', schema: 'public', table }, () => {
+        fetchData(); // Refetch data when a change occurs
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [table, orderBy, ascending]);
 
   return { data, loading };
@@ -28,20 +44,37 @@ export function useNews() {
 
   useEffect(() => {
     if (!supabase) { console.warn('[Supabase] client is null — env vars missing'); return; }
-    supabase.from('news').select('*').order('created_at', { ascending: false }).then(({ data: rows, error }) => {
-      console.log('[Supabase] news fetch:', { rows, error });
-      if (!error && rows && rows.length > 0) {
-        setData(rows.map(r => ({
-          id: r.id,
-          date: r.date,
-          title: r.title,
-          excerpt: r.excerpt,
-          fullContent: r.full_content,
-          linkUrl: r.link_url,
-        })));
-      }
-      setLoading(false);
-    });
+
+    const fetchNews = () => {
+      supabase.from('news').select('*').order('created_at', { ascending: false }).then(({ data: rows, error }) => {
+        console.log('[Supabase] news fetch:', { rows, error });
+        if (!error && Array.isArray(rows)) {
+          setData(rows.map(r => ({
+            id: r.id,
+            date: r.date,
+            title: r.title,
+            excerpt: r.excerpt,
+            fullContent: r.full_content,
+            linkUrl: r.link_url,
+          })));
+        }
+        setLoading(false);
+      });
+    };
+
+    fetchNews();
+
+    // Subscribe to real-time changes for the news table
+    const channel = supabase
+      .channel('news_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'news' }, () => {
+        fetchNews(); // Refetch data when a change occurs
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return { data, loading };

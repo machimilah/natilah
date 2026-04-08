@@ -5,11 +5,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { Target, Lightbulb, Workflow, Cpu, Infinity, Zap } from 'lucide-react';
 import { aboutPageData } from '../data/mockData';
+import { useTeam } from '../hooks/useData';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const AboutPage = () => {
   const containerRef = useRef(null);
+  const { data: teamData, loading: teamLoading } = useTeam();
 
   useGSAP(() => {
     gsap.to('.parallax-bg', {
@@ -32,7 +34,7 @@ const AboutPage = () => {
       </Helmet>
 
       <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden">
-        
+
         {/* Soft Background Orbs */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="parallax-bg absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-br from-slate-700/20 to-slate-800/10 blur-[120px] rounded-full" />
@@ -61,11 +63,11 @@ const AboutPage = () => {
                 { icon: Target, title: "Deterministic Outcomes", desc: "In a world of probabilistic chaos, our schedulers bring rigorous mathematical certainty to every payload." }
               ].map((val, i) => (
                 <div key={i} className="p-10 bg-white/[0.03] backdrop-blur border border-white/[0.06] rounded-3xl shadow-[0_4px_20px_-10px_rgba(0,0,0,0.3)] hover:shadow-lg hover:bg-white/[0.05] transition-all duration-500">
-                   <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center mb-6">
-                     <val.icon size={22} className="text-white" />
-                   </div>
-                   <h3 className="text-xl font-medium text-white mb-4">{val.title}</h3>
-                   <p className="text-slate-400 font-light leading-relaxed">{val.desc}</p>
+                  <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center mb-6">
+                    <val.icon size={22} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-medium text-white mb-4">{val.title}</h3>
+                  <p className="text-slate-400 font-light leading-relaxed">{val.desc}</p>
                 </div>
               ))}
             </div>
@@ -79,24 +81,27 @@ const AboutPage = () => {
                 We are a team of low-level systems engineers, quantum physicists, and distributed networking veterans. We build tools that command bare metal.
               </p>
             </div>
-            
+
             <div className="team-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {aboutPageData.team?.map((member, i) => (
-                 <div key={i} className="team-card bg-white/[0.03] rounded-3xl p-8 border border-white/[0.06] shadow-sm hover:shadow-xl hover:bg-white/[0.05] transition-all duration-500">
+              {teamLoading ? (
+                <p className="text-slate-400">Loading team members...</p>
+              ) : (
+                teamData?.map((member, i) => (
+                  <div key={i} className="team-card bg-white/[0.03] rounded-3xl p-8 border border-white/[0.06] shadow-sm hover:shadow-xl hover:bg-white/[0.05] transition-all duration-500">
                     <div className="w-20 h-20 bg-slate-800 rounded-2xl mb-6 flex items-center justify-center border border-white/[0.06]">
-                       <Cpu size={28} className="text-slate-500" />
+                      <Cpu size={28} className="text-slate-500" />
                     </div>
                     <h3 className="text-xl font-medium text-white mb-1">{member.name}</h3>
                     <p className="text-sm text-slate-300 font-medium mb-4">{member.role}</p>
-                    <p className="text-slate-400 font-light text-sm line-clamp-3">{member.bio || "Systems architecture & computing research."}</p>
-                    
+
                     {member.linkedinUrl && (
                       <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex text-xs font-semibold text-slate-500 hover:text-white uppercase tracking-wider transition-colors">
                         LinkedIn
                       </a>
                     )}
-                 </div>
-              ))}
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

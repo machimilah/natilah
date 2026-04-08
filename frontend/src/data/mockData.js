@@ -150,7 +150,7 @@ export const aboutPageData = {
     { title: "Multi-objective", description: "Unlike heuristics hardcoded for one metric, QUASAR encodes: makespan, SLA deadlines, fairness, and priority as penalty terms — any objective, no rewrite needed." }
   ],
   team: [
-    { name: "Máximo Caraballo", role: "Founder - CEO and Quasar's developer", bio: "Milanesa", linkedinUrl: "https://www.linkedin.com/in/m%C3%A1ximo-caraballo-chichiraldi-2b8782355/" },
+    { name: "Máximo Caraballo", role: "Founder - CEO", linkedinUrl: "https://www.linkedin.com/in/m%C3%A1ximo-caraballo-chichiraldi-2b8782355/" },
     
   ]
 };

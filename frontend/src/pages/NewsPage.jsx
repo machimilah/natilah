@@ -24,13 +24,13 @@ const NewsPage = () => {
       </Helmet>
 
       <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden">
-         <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute top-[30%] right-[-20%] w-[70vw] h-[70vw] bg-gradient-to-tr from-slate-700/15 to-slate-800/10 blur-[130px] rounded-full" />
         </div>
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-8 lg:px-12 relative z-10">
           <div className="reveal-up max-w-4xl mb-24 md:mb-32">
-             
+
             <h1 className="text-5xl md:text-7xl font-light text-white leading-[1.05] tracking-tight mb-10">
               News and <span className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Research</span>.
             </h1>
@@ -40,16 +40,16 @@ const NewsPage = () => {
           </div>
 
           {loading ? (
-             <div className="flex justify-center items-center h-64 text-slate-500">
-               <span className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white animate-spin"/>
-             </div>
+            <div className="flex justify-center items-center h-64 text-slate-500">
+              <span className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white animate-spin" />
+            </div>
           ) : (
             <div className="news-grid grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 mb-32">
               {newsData?.map((item, idx) => (
                 <div key={idx} className="news-card group flex flex-col p-10 bg-white/[0.03] rounded-3xl border border-white/[0.06] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.3)] hover:shadow-xl hover:bg-white/[0.05] transition-all duration-500">
                   <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold uppercase tracking-widest mb-6">
                     <Calendar size={14} className="text-slate-600" />
-                    {new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {item.date ? (isNaN(new Date(item.date).getTime()) ? item.date : new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })) : 'No Date'}
                   </div>
                   <h3 className="text-2xl md:text-3xl font-light text-white mb-6 leading-[1.2] group-hover:text-slate-300 transition-colors duration-300">
                     {item.title}
