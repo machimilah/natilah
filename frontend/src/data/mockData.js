@@ -151,7 +151,7 @@ export const aboutPageData = {
   ],
   team: [
     { name: "Máximo Caraballo", role: "Founder - CEO and Quasar's developer", bio: "Milanesa", linkedinUrl: "https://www.linkedin.com/in/m%C3%A1ximo-caraballo-chichiraldi-2b8782355/" },
-    { name: "Samuel Caraballo", role: "Co-Founder", bio: "", linkedinUrl: null },
+    
   ]
 };
 
