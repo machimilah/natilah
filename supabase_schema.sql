@@ -32,14 +32,25 @@ create table team (
   created_at timestamptz default now()
 );
 
+-- CONTACT MESSAGES table
+create table contact_messages (
+  id bigint generated always as identity primary key,
+  name text not null,
+  email text not null,
+  message text not null,
+  created_at timestamptz default now()
+);
+
 -- Allow public read access (no login required to view the site)
 alter table news enable row level security;
 alter table research_papers enable row level security;
 alter table team enable row level security;
+alter table contact_messages enable row level security;
 
 create policy "Public read" on news for select using (true);
 create policy "Public read" on research_papers for select using (true);
 create policy "Public read" on team for select using (true);
+create policy "Public insert" on contact_messages for insert with check (true);
 
 -- Seed initial news data
 insert into news (date, title, excerpt, full_content) values

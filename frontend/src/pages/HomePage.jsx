@@ -98,14 +98,14 @@ const HomePage = () => {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">Computation</span>
                 </h2>
                 <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed">
-                  Natilah's technology uses quantum-inspired algorithms and common quantum language to orchestrate classical hardware at unprecedented scales, unlocking new frontiers of performance.
+                  We believe the future of computation is Quantum.
                 </p>
                 <div className="mt-10">
                   <Link
-                    to="/products/quasar"
+                    to="/products/"
                     className="inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-slate-200 transition-all duration-300 group shadow-[0_4px_20px_rgba(255,255,255,0.1)]"
                   >
-                    Discover Quasar
+                    Products
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
@@ -117,8 +117,15 @@ const HomePage = () => {
           </div>
         </section>
 
+        {/* Separator to match the width of the vision image container */}
+        <div className="w-full bg-black relative z-10 pt-16 md:pt-24">
+          <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+            <div className="w-full h-px bg-white/[0.15]"></div>
+          </div>
+        </div>
+
         {/* 6. Vision / Storytelling */}
-        <section className="vision-section relative z-10 py-32 md:py-48 bg-black border-y border-white/[0.06] overflow-hidden">
+        <section className="vision-section relative z-10 py-24 md:py-32 bg-black border-b border-white/[0.06] overflow-hidden">
           <div className="max-w-[1440px] mx-auto px-6 md:px-12 mb-16 md:mb-24 reveal-up">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
               {/* Left Column: Title */}
@@ -133,10 +140,10 @@ const HomePage = () => {
               <div className="flex flex-col h-full justify-between">
                 <div className="space-y-6 text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
                   <p>
-                    At the frontier of computing, the bottleneck is no longer just FLOPs. It's the orchestration, the physical distance between memory and processors, and the statistical likelihood of idle queues.
+                    Natilah plans to be the software and foundation company for the advancement of computation.
                   </p>
                   <p>
-                    We are completely rethinking the stack by moving intelligence closer to the metal. Natilah enables hardware-fluid deployments ensuring the world's most brilliant minds never have to wait on infrastructure.
+                    Both in classical and quantum computing, we are building the software that will orchestrate the next generation of hardware, enabling researchers and enterprises to push the boundaries of what's possible with AI and scientific discovery.
                   </p>
                 </div>
                 <div className="mt-12 lg:mt-16">

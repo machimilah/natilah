@@ -4,11 +4,13 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Link } from 'react-router-dom';
 import { Send, MapPin, Mail, Phone, ArrowUpRight } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const ContactPage = () => {
   const containerRef = useRef(null);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   useGSAP(() => {
     gsap.to('.orb-float', {
@@ -24,14 +26,58 @@ const ContactPage = () => {
     });
   }, { scope: containerRef });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitStatus(null);
+    
+    try {
+      // 1. Log to your Supabase database (Optional backup)
+      if (supabase) {
+        const { error } = await supabase
+          .from('contact_messages')
+          .insert([
+            { 
+              name: formState.name, 
+              email: formState.email, 
+              message: formState.message 
+            }
+          ]);
+          
+        if (error) console.error("Database backup error:", error);
+      }
+
+      // 2. Redirect straight to your email using Web3Forms (Frontend-friendly, no backend needed)
+      // GET YOUR FREE KEY AT: https://web3forms.com/ (just put your email in to get the key)
+      const emailResponse = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: 'f6bf65d8-542a-4e27-af4d-f8ec1e547c0c',
+          from_name: 'Natilah Website',
+          subject: `New Transmission from ${formState.name} (${formState.email})`,
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+        })
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error("Email service failed");
+      }
+
+      setSubmitStatus('success');
       setFormState({ name: '', email: '', message: '' });
-      alert("Message received. Natilah Support will be in touch shortly.");
-    }, 1500);
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } catch (error) {
+      console.error('Error submitting message:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -108,15 +154,42 @@ const ContactPage = () => {
               <div className="form-input-group pt-8">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="group w-full flex items-center justify-between text-slate-900 bg-white hover:bg-slate-200 rounded-full px-8 py-5 text-lg font-medium transition-all duration-500 shadow-xl shadow-black/20 hover:shadow-white/10 disabled:opacity-70 disabled:cursor-not-allowed"
+                  disabled={isSubmitting || submitStatus === 'success'}
+                  className={`group w-full flex items-center justify-between rounded-full px-8 py-5 text-lg font-medium transition-all duration-500 shadow-xl ${
+                    submitStatus === 'success' 
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-emerald-500/10' 
+                      : submitStatus === 'error'
+                      ? 'bg-red-500/20 text-red-300 border border-red-500/50 shadow-red-500/10'
+                      : 'text-slate-900 bg-white hover:bg-slate-200 shadow-black/20 hover:shadow-white/10'
+                  } disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
-                  <span>{isSubmitting ? 'Transmitting...' : 'Initiate Sequence'}</span>
-                  <div className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                    {isSubmitting ? <span className="w-5 h-5 border-2 border-slate-400/30 border-t-slate-900 rounded-full animate-spin" /> : <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                  <span>
+                    {isSubmitting ? 'Transmitting...' : 
+                     submitStatus === 'success' ? 'Transmission Complete' : 
+                     submitStatus === 'error' ? 'Transmission Failed' : 
+                     'Initiate Sequence'}
+                  </span>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                    submitStatus === 'success' ? 'bg-emerald-500/20' : 
+                    submitStatus === 'error' ? 'bg-red-500/20' : 
+                    'bg-black/10 group-hover:bg-black/20'
+                  }`}>
+                    {isSubmitting ? (
+                      <span className="w-5 h-5 border-2 border-slate-400/30 border-t-current rounded-full animate-spin" />
+                    ) : (
+                      <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    )}
                   </div>
                 </button>
               </div>
+              
+              {/* Optional explicit status text beneath button */}
+              {submitStatus === 'success' && (
+                <p className="text-emerald-400 text-center mt-4">Message received. Natilah Support will be in touch shortly.</p>
+              )}
+              {submitStatus === 'error' && (
+                <p className="text-red-400 text-center mt-4">System error during transmission. Please try again.</p>
+              )}
             </form>
           </div>
 

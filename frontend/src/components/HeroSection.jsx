@@ -1,10 +1,175 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowDown, ChartArea, ChartPie, ChartPieIcon, Clock1, Layers, Play } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
 
 gsap.registerPlugin(useGSAP);
+
+const GLTFTextModel = () => {
+  const mountRef = useRef(null);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    // Get Initial Size
+    const getContainerSize = () => {
+      const width = mountRef.current.clientWidth;
+      const height = mountRef.current.clientHeight || 400; 
+      return { width, height };
+    };
+    let { width, height } = getContainerSize();
+
+    // Scene Setup
+    const scene = new THREE.Scene();
+    
+    // Camera Setup
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    
+    // Helper to calculate camera distance based on screen width to prevent clipping
+    const getCameraZ = (vw) => {
+      if (vw < 640) return 30; // Mobile: pull way back so it fits
+      if (vw < 1024) return 20; // Tablet: slightly pulled back
+      return 15; // Desktop: original distance
+    };
+    camera.position.set(0, 0, getCameraZ(width));
+
+    // Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Render initially
+    renderer.setClearColor(0x000000, 0); // Transparent background
+
+    // Initialize RectAreaLight for the bottom panel effect
+    RectAreaLightUniformsLib.init();
+
+    // Lighting (crucial for silver material reflections)
+    // Raised ambient slightly so it's not "too dark" globally
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+    // Massive Panel Light shining up from the bottom (width 40 to cover all text, height 10)
+    // This creates a broad, glowing white/silver reflection pool across the bottom geometry
+    const bottomPanelLight = new THREE.RectAreaLight(0xffffff, 15.0, 40, 10);
+    bottomPanelLight.position.set(0, -6, 2); // Positioned low and slightly forward
+    bottomPanelLight.lookAt(0, 0, 0); // Pointed directly up at the center of the text
+    scene.add(bottomPanelLight);
+
+    // Keep a subtle front fill so the centers aren't entirely empty, but bumped slightly
+    const frontLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    frontLight.position.set(0, 0, 15);
+    scene.add(frontLight);
+    
+    // Far edge Rim lights to define the extreme left/right bounds (but not the center faces)
+    const leftRim = new THREE.DirectionalLight(0xffffff, 5.0);
+    leftRim.position.set(-20, 0, -2);
+    scene.add(leftRim);
+    
+    const rightRim = new THREE.DirectionalLight(0xffffff, 5.0);
+    rightRim.position.set(20, 0, -2);
+    scene.add(rightRim);
+
+    // The Realistic Silver Material (Brightened up)
+    const silverMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xa9b0bd,           // Brighter silver base color to fix "too dark"
+      metalness: 1.0,            // 100% metal
+      roughness: 0.15,           // Slightly softer roughness to spread the bottom panel light beautifully
+      clearcoat: 1.0,            // Glossy protective layer over it
+      clearcoatRoughness: 0.05,  // Slight blur on the clearcoat
+      reflectivity: 1.0          // Maximum light reflection
+    });
+
+    let modelGroup;
+    let wrapper;
+    const loader = new GLTFLoader();
+    
+    // Load the provided GLTF model
+    loader.load('/images/model.gltf', (gltf) => {
+      modelGroup = gltf.scene;
+      
+      // Create a wrapper group for safe scaling and rotation
+      wrapper = new THREE.Group();
+      scene.add(wrapper);
+
+      // Apply the silver material to all meshes in the model
+      modelGroup.traverse((child) => {
+        if (child.isMesh) {
+          child.material = silverMaterial;
+        }
+      });
+
+      // Step 1: Center the model using its exact bounding box
+      const box = new THREE.Box3().setFromObject(modelGroup);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      
+      // Shift the model itself backward by its bounds center so its true center rests at (0, 0, 0)
+      modelGroup.position.sub(center);
+      wrapper.add(modelGroup);
+
+      // Step 2: Scale the wrapper so the word "Quasar" fits visually in the container
+      // Make it noticeably bigger as requested
+      const targetWidth = 30; 
+      const scale = targetWidth / Math.max(size.x, 1); // fallback to 1 to avoid div zero
+      wrapper.scale.set(scale, scale, scale);
+
+      // Move it down slightly so it's closer to the text below
+      wrapper.position.y -= 1.5;
+
+      // If the model was created flat on the ground (XZ plane), uncomment the following line to stand it up.
+      // Often, GLTFs map Z up or Y up differently:
+      // wrapper.rotation.x = Math.PI / 2;
+    });
+
+    // Add continuous render loop WITHOUT constant rotation wobble
+    let animationFrameId;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      if (!mountRef.current) return;
+      const { width, height } = getContainerSize();
+      camera.aspect = width / height;
+      camera.position.z = getCameraZ(width);
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      // Optional: adjust lighting or scales specifically for mobile here if needed
+    };
+    
+    window.addEventListener('resize', handleResize);
+
+    const currentMount = mountRef.current;
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      if (currentMount && renderer.domElement) {
+        currentMount.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, []);
+
+  return (
+    <div 
+      ref={mountRef} 
+      className="flex justify-center items-center w-full max-w-[1200px] h-[200px] sm:h-[300px] md:h-[400px] mx-auto pointer-events-none"
+    />
+  );
+};
 
 const HeroSection = () => {
   const containerRef = useRef(null);
@@ -56,59 +221,11 @@ const HeroSection = () => {
         <div className="max-w-[1440px] mx-auto w-full">
 
           {/* Main Copy */}
-          <div className="flex flex-col items-center text-center pt-24 md:pt-36 max-w-4xl mx-auto">
+          <div className="flex flex-col items-center text-center pt-16 md:pt-24 max-w-4xl mx-auto">
             
-            <style>{`
-              @keyframes shimmerMetal {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-              }
-            `}</style>
-
-            {/* Real CSS 3D Body Representation */}
-            <div className="relative perspective-[1200px] mb-12 flex justify-center" style={{ WebkitPerspective: "1200px" }}>
-              <div
-                className="relative hero-elem"
-                style={{
-                  transformStyle: "preserve-3d",
-                  transform: "rotateX(0deg) rotateY(0deg)"
-                }}
-              >
-                {/* Front Face (Mid-Dark Animated Silver Reflective Panel) */}
-                <h1
-                  className="relative z-50 text-7xl sm:text-8xl md:text-9xl font-bold tracking-tighter mix-blend-normal"
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    transform: "translateZ(0px)",
-                    backgroundImage: "linear-gradient(110deg, #94a3b8 0%, #cbd5e1 25%, #475569 50%, #94a3b8 75%, #f1f5f9 100%)",
-                    backgroundSize: "200% auto",
-                    animation: "shimmerMetal 6s ease-in-out infinite",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    textShadow: "none"
-                  }}
-                >
-                  Quasar
-                </h1>
-
-                {/* 3D Extrusion Layers (body) */}
-                {[...Array(40)].map((_, i) => (
-                  <h1
-                    key={`extrusion-${i}`}
-                    className="absolute top-0 left-0 w-full text-7xl sm:text-8xl md:text-9xl font-bold tracking-tighter"
-                    style={{
-                      fontFamily: "'Montserrat', sans-serif",
-                      transform: `translateZ(-${i + 1}px)`,
-                      color: i % 3 === 0 ? "#94a3b8" : (i % 2 === 0 ? "#475569" : "#334155"), // Mid-tone grooved metallic accent
-                      textShadow: i === 39 ? "0px 30px 40px rgba(0,0,0,0.5)" : "none", // Root shadow
-                    }}
-                  >
-                    Quasar
-                  </h1>
-                ))}
-              </div>
+            {/* Real GLTF 3D Body Representation */}
+            <div className="relative mb-2 flex justify-center w-full z-50">
+              <GLTFTextModel />
             </div>
 
             <p className="hero-elem text-lg md:text-xl lg:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl mb-6 md:mb-8 mx-auto -mt-6">

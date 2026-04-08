@@ -1,211 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quasar Flow - Right to Left</title>
+    <title>Silver Material Template</title>
     <style>
-        :root {
-            --bg-color: #020205;
-            --glow-color: rgba(60, 130, 255, 0.6);
-        }
-
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            overflow: hidden;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            color: white;
-        }
-
-        /* The Canvas handles the volumetric smoke flowing right to left */
-        #smokeCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* The Quasar Core
-           Anchored to the far right edge, slightly off-screen for a massive feel 
-        */
-        .quasar-core {
-            position: absolute;
-            top: 50%;
-            right: -10vw;
-            /* Pushed partially off-screen */
-            transform: translateY(-50%);
-            width: 25vw;
-            height: 25vw;
-            background: radial-gradient(circle, #ffffff 2%, #88ccff 15%, #2255ff 40%, transparent 70%);
-            border-radius: 50%;
-            box-shadow:
-                0 0 150px 50px rgba(100, 150, 255, 0.3),
-                -50px 0 200px 80px rgba(50, 100, 255, 0.2);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        /* Typography Container
-           Anchored to the left side 
-        */
-        .text-container {
-            position: absolute;
-            top: 50%;
-            left: 10vw;
-            transform: translateY(-50%);
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        h1 {
-            font-size: 10vw;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: -0.2vw;
-            /* Tighter letter spacing for modern tech look */
-            color: #ffffff;
-            /* High quality metallic/glass reflection gradient */
-            background: linear-gradient(180deg, #ffffff 0%, #b3d4ff 40%, #4a88e8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 30px var(--glow-color));
-            line-height: 1;
-        }
-
-        .subtitle {
-            color: #88ccff;
-            letter-spacing: 0.4vw;
-            font-size: 1.5vw;
-            font-weight: 300;
-            margin-top: 10px;
-            opacity: 0.9;
-            margin-left: 0.5vw;
-        }
+        body { margin: 0; overflow: hidden; background-color: #e0e0e0; }
+        canvas { display: block; }
     </style>
 </head>
-
 <body>
-
-    <canvas id="smokeCanvas"></canvas>
-
-    <div class="quasar-core"></div>
-
-    <div class="text-container">
-        <h1>QUASAR</h1>
-        <div class="subtitle">STELLAR ENGINE VISUALIZATION</div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('smokeCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
         }
+      }
+    </script>
 
-        window.addEventListener('resize', resize);
-        resize();
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
+        // 1. Scene setup (Light gray background is essential for reflections)
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xdddddd); 
 
-            reset() {
-                // SPATIAL ORIGIN: Start at the far right of the screen (the Quasar core)
-                this.x = width;
-                this.y = height / 2;
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 0, 5);
 
-                // VELOCITY: Push strongly to the LEFT (negative X)
-                this.vx = -(Math.random() * 8 + 3);
-                // Slight vertical spread
-                this.vy = (Math.random() - 0.5) * 3;
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-                this.life = 1;
-                this.decay = Math.random() * 0.004 + 0.001;
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
 
-                // Size: start small near the star, grow massive as it blows left
-                this.size = Math.random() * 10 + 5;
-                this.maxSize = Math.random() * 150 + 60;
+        // 2. The "Light Tent" (Silver needs strong lights to reflect)
+        scene.add(new THREE.AmbientLight(0xffffff, 1.0));
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 2.0)); // Sky/Ground light
 
-                // Color mapping: Inner core is white/cyan, cooling down to deep blue
-                const hue = 200 + Math.random() * 50;
-                this.color = `hsl(${hue}, 100%, 70%)`;
-            }
+        const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
+        keyLight.position.set(5, 5, 5);
+        scene.add(keyLight);
 
-            update() {
-                // WIND TUNNEL MATH: Sine wave based on X position creates the rippling effect
-                this.y += Math.sin(this.x * 0.004) * 4;
+        const fillLight = new THREE.DirectionalLight(0xffffff, 2.0);
+        fillLight.position.set(-5, -5, 5);
+        scene.add(fillLight);
 
-                this.x += this.vx;
-                this.y += this.vy;
+        // 3. APPLYING THE MATERIAL
+        const silverMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            metalness: 1.0,
+            roughness: 0.05,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.05,
+            reflectivity: 1.0
+        });
 
-                this.life -= this.decay;
+        // Create a shape and apply the material
+        const geometry = new THREE.SphereGeometry(1, 64, 64);
+        const sphere = new THREE.Mesh(geometry, silverMaterial);
+        scene.add(sphere);
 
-                // Smoke expands as it travels further away from the star
-                if (this.size < this.maxSize) {
-                    this.size += 0.8;
-                }
-
-                // Recycle particle if it dies or goes off the left edge
-                if (this.life <= 0 || this.x < -150) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                // Low opacity for the soft, layered smoke look
-                ctx.globalAlpha = this.life * 0.1;
-                ctx.fillStyle = this.color;
-
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // Initialize particles
-        for (let i = 0; i < 600; i++) {
-            particles.push(new Particle());
-            // Fast-forward so the smoke is already flowing when the page loads
-            for (let j = 0; j < Math.random() * 200; j++) {
-                particles[i].update();
-            }
-        }
-
+        // 4. Render loop
         function animate() {
-            // Dark motion blur trail
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = 'rgba(2, 2, 5, 0.3)';
-            ctx.fillRect(0, 0, width, height);
-
-            // Additive blending for the glowing, high-energy plasma look
-            ctx.globalCompositeOperation = 'lighter';
-
-            for (let particle of particles) {
-                particle.update();
-                particle.draw();
-            }
-
             requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
         }
-
         animate();
+
+        // Handle resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
-
 </html>

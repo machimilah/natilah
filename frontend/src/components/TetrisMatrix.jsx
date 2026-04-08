@@ -155,32 +155,9 @@ const TetrisMatrix = () => {
       <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 blur-2xl rounded-full pointer-events-none" />
       <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-slate-400/10 blur-3xl rounded-full pointer-events-none" />
       
-      {/* Floating UI metric */}
-      <div className="floating-card absolute -left-6 md:-left-12 top-[15%] bg-black/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 shadow-xl text-sm font-medium text-slate-200 hidden sm:block">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-            <Clock1 size={22} className="text-white" />
-          </div>
-          <div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Custer wait time</div>
-            <div className="text-lg font-semibold text-white leading-tight">-78%</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Floating Metric 2 */}
-      <div className="floating-card absolute -right-4 md:-right-8 bottom-[15%] bg-black/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 shadow-xl text-sm font-medium text-slate-200 hidden sm:block">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-            <Layers size={18} className="text-slate-300" />
-          </div>
-          <div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Compute density</div>
-            <div className="text-lg font-semibold text-slate-200 leading-tight">14.2%</div>
-          </div>
-        </div>
-      </div>
     </div>
+
+
   );
 };
 
