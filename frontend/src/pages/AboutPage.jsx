@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { Target, Lightbulb, Workflow, Cpu, Infinity, Zap } from 'lucide-react';
-import { aboutPageData } from '../data/mockData';
 import { useTeam } from '../hooks/useData';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);

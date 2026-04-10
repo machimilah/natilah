@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { newsData, researchPageData, aboutPageData } from '../data/mockData';
 
 function useSupabaseTable(table, fallback, orderBy = 'created_at', ascending = false) {
   const [data, setData] = useState(fallback);
@@ -39,7 +38,7 @@ function useSupabaseTable(table, fallback, orderBy = 'created_at', ascending = f
 }
 
 export function useNews() {
-  const [data, setData] = useState(newsData);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(!!supabase);
 
   useEffect(() => {
@@ -81,9 +80,9 @@ export function useNews() {
 }
 
 export function useResearchPapers() {
-  return useSupabaseTable('research_papers', researchPageData.papers, 'date', false);
+  return useSupabaseTable('research_papers', [], 'date', false);
 }
 
 export function useTeam() {
-  return useSupabaseTable('team', aboutPageData.team, 'order', true);
+  return useSupabaseTable('team', [], 'order', true);
 }

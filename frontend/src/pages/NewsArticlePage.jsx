@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, ArrowRight, Rss } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { newsData } from '../data/mockData';
 import { useNews } from '../hooks/useData';
 
 const NewsArticlePage = () => {
@@ -33,14 +32,7 @@ const NewsArticlePage = () => {
             fullContent: data.full_content,
             linkUrl: data.link_url,
           });
-          setLoading(false);
-          return;
         }
-      }
-
-      const mockArticle = newsData.find(item => item.id === parseInt(id));
-      if (mockArticle) {
-        setArticle(mockArticle);
       }
       setLoading(false);
     };
