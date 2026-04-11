@@ -37,18 +37,17 @@ const ContactPage = () => {
         const { error } = await supabase
           .from('contact_messages')
           .insert([
-            { 
-              name: formState.name, 
-              email: formState.email, 
-              message: formState.message 
+            {
+              name: formState.name,
+              email: formState.email,
+              message: formState.message
             }
           ]);
-          
-        if (error) console.error("Database backup error:", error);
+
+        if (error) console.error('Database backup error:', error);
       }
 
       // 2. Redirect straight to your email using Web3Forms (Frontend-friendly, no backend needed)
-      // GET YOUR FREE KEY AT: https://web3forms.com/ (just put your email in to get the key)
       const emailResponse = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
@@ -66,7 +65,7 @@ const ContactPage = () => {
       });
 
       if (!emailResponse.ok) {
-        throw new Error("Email service failed");
+        throw new Error('Email service failed');
       }
 
       setSubmitStatus('success');
