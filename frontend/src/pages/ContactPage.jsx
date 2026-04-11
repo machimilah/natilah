@@ -102,30 +102,29 @@ const ContactPage = () => {
             </h1>
             
             <p className="reveal-hero text-xl md:text-2xl text-slate-400 font-light leading-relaxed mx-auto">
-              Initiate a dialogue regarding enterprise deployment, custom integration schedules, or investment opportunities.
             </p>
           </div>
 
           {/* Form Box */}
-          <div className="w-full bg-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] p-10 md:p-14 border border-white/[0.06] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.4)] relative overflow-hidden">
+          <div className="w-full backdrop-blur-3xl rounded-[2.5rem] p-10 md:p-14 border border-white/[0.06] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.4)] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gradient-to-bl from-white/[0.03] to-transparent pointer-events-none" />
 
             <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
               <div className="form-input-group">
-                <label htmlFor="name" className="block text-sm font-semibold uppercase tracking-widest text-slate-500 mb-3">Identification</label>
+                <label htmlFor="name" className="block text-sm font-semibold uppercase tracking-widest text-white mb-3">Identification</label>
                 <input
                   type="text"
                   id="name"
                   required
                   placeholder="Full Name / Organization"
-                  className="w-full bg-transparent border-b border-white/[0.1] py-4 text-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-white/40 transition-colors duration-300"
+                  className="w-full bg-transparent border-b border-white/[0.1] py-4 text-xl text-white placeholder:text- focus:outline-none focus:border-white/40 transition-colors duration-300"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                 />
               </div>
 
               <div className="form-input-group">
-                <label htmlFor="email" className="block text-sm font-semibold uppercase tracking-widest text-slate-500 mb-3">Return Vector</label>
+                <label htmlFor="email" className="block text-sm font-semibold uppercase tracking-widest text-white mb-3">Return Vector</label>
                 <input
                   type="email"
                   id="email"
@@ -138,7 +137,7 @@ const ContactPage = () => {
               </div>
 
               <div className="form-input-group pt-4">
-                <label htmlFor="message" className="block text-sm font-semibold uppercase tracking-widest text-slate-500 mb-3">Transmission Payload</label>
+                <label htmlFor="message" className="block text-sm font-semibold uppercase tracking-widest text-white mb-3">Transmission Payload</label>
                 <textarea
                   id="message"
                   required
@@ -150,35 +149,25 @@ const ContactPage = () => {
                 />
               </div>
 
-              <div className="form-input-group pt-8">
+              <div className="form-input-group pt-8 flex justify-end">
                 <button
                   type="submit"
                   disabled={isSubmitting || submitStatus === 'success'}
-                  className={`group w-full flex items-center justify-between rounded-full px-8 py-5 text-lg font-medium transition-all duration-500 shadow-xl ${
+                  className={`group flex items-center justify-between rounded-xl px-8 py-5 text-lg font-medium transition-all duration-500 shadow-xl ${
                     submitStatus === 'success' 
                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-emerald-500/10' 
                       : submitStatus === 'error'
                       ? 'bg-red-500/20 text-red-300 border border-red-500/50 shadow-red-500/10'
-                      : 'text-slate-900 bg-white hover:bg-slate-200 shadow-black/20 hover:shadow-white/10'
+                      : 'text-white bg-black border border-white/[0.1] hover:bg-gray-300 hover:text-black shadow-black/20 hover:shadow-white/10'
                   } disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
                   <span>
                     {isSubmitting ? 'Transmitting...' : 
                      submitStatus === 'success' ? 'Transmission Complete' : 
                      submitStatus === 'error' ? 'Transmission Failed' : 
-                     'Initiate Sequence'}
+                     'Send message'}
                   </span>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                    submitStatus === 'success' ? 'bg-emerald-500/20' : 
-                    submitStatus === 'error' ? 'bg-red-500/20' : 
-                    'bg-black/10 group-hover:bg-black/20'
-                  }`}>
-                    {isSubmitting ? (
-                      <span className="w-5 h-5 border-2 border-slate-400/30 border-t-current rounded-full animate-spin" />
-                    ) : (
-                      <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    )}
-                  </div>
+                  
                 </button>
               </div>
               

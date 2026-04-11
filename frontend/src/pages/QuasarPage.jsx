@@ -253,19 +253,17 @@ const QuasarPage = () => {
         </section>
 
         {/* Matrix Optimization Visualization Section */}
-        <section className="relative z-10 py-32 px-6 md:px-12 bg-black overflow-hidden">
+        {/* <section className="relative z-10 py-32 px-6 md:px-12 bg-black overflow-hidden">
           <div className="max-w-[1440px] mx-auto">
             <div className="flex flex-col items-center text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-light text-white mb-6">Live Optimization Engine</h2>
-              <p className="text-slate-400 max-w-2xl text-lg font-light">
-                Visualize how Quasar analyzes and packs workloads in real-time, eliminating stranded capacity across the entire supercluster.
-              </p>
+              
             </div>
             <div className="flex justify-center">
               <TetrisMatrix />
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
     </>
   );

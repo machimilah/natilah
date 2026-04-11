@@ -29,26 +29,31 @@ const Navbar = ({ links }) => {
       }`}
     >
       <div className="max-w-[1440px] w-full mx-auto px-6 md:px-8 lg:px-12">
-        <div className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? 'h-16' : 'h-24'}`}>
-          {/* Logo */}
-          <Link
-            to="/"
-            className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0 lg:mr-20"
-          >
-            <img
-              src="/images/natilahlonglogobg.png"
-              alt="Natilah Technologies"
-              className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
-            />
-          </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center">
+
+
+        <div className={`hidden lg:flex items-center transition-all duration-300 ${isScrolled ? 'h-16' : 'h-24'}`}>
+          {/* Logo - left */}
+          <div className="flex justify-start flex-1">
+            <Link
+              to="/"
+              className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0"
+            >
+              <img
+                src="/images/natilahlonglogobg.png"
+                alt="Natilah Technologies"
+                className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
+              />
+            </Link>
+          </div>
+
+          {/* Desktop Navigation - shifted right */}
+          <div className="flex justify-start flex-1 lg:ml-24 xl:ml-40 2xl:ml-64">
             {links.map((link, index) => (
               <React.Fragment key={link.label}>
                 <Link
                   to={link.href}
-                  className={`text-sm tracking-widest uppercase font-semibold transition-colors duration-300 relative group whitespace-nowrap ${
+                  className={`text-sm tracking-widest uppercase font-semibold transition-colors duration-300 relative group whitespace-nowrap mx-2 ${
                     location.pathname === link.href
                       ? 'text-white'
                       : 'text-slate-400 hover:text-white'
@@ -64,21 +69,27 @@ const Navbar = ({ links }) => {
                   />
                 </Link>
                 {index < links.length - 1 && (
-                  <span className="text-slate-600 mx-5 text-sm font-light">/</span>
+                  <span className="text-slate-600 mx-2 text-sm font-light">/</span>
                 )}
               </React.Fragment>
             ))}
           </div>
+        </div>
 
-          {/* Quick CTA placeholder to maintain layout */}
-          <div className="hidden lg:flex items-center invisible pointer-events-none select-none">
-             <Link
-                to="/contact"
-                className="px-5 py-2 bg-white text-slate-900 text-sm font-semibold uppercase tracking-widest rounded-full"
-              >
-                Access Platform
-             </Link>
-          </div>
+        {/* Mobile layout (unchanged) */}
+        <div className={`flex items-center justify-center lg:hidden transition-all duration-300 ${isScrolled ? 'h-16' : 'h-24'}`}>
+          {/* Logo */}
+          <Link
+            to="/"
+            className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0 lg:mr-12"
+            style={{ position: 'absolute', left: 0 }}
+          >
+            <img
+              src="/images/natilahlonglogobg.png"
+              alt="Natilah Technologies"
+              className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
+            />
+          </Link>
 
           {/* Mobile Menu Button */}
           <button

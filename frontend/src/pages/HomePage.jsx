@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Activity, Binary, Cpu, Network, Zap, Shield, GitMerge } from 'lucide-react';
+import { ArrowRight, Activity, Binary, Cpu, Network, Zap, Shield, GitMerge, ChevronRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -103,7 +103,7 @@ const HomePage = () => {
                 <div className="mt-10">
                   <Link
                     to="/products/"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-slate-200 transition-all duration-300 group shadow-[0_4px_20px_rgba(255,255,255,0.1)]"
+                    className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-lg font-medium transition-all duration-500 shadow-xl text-white bg-black border border-white/[0.1] hover:bg-gray-300 hover:text-black shadow-black/20 hover:shadow-white/10 group"
                   >
                     Products
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -181,9 +181,9 @@ const HomePage = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
                 to="/contact"
-                className="w-full sm:w-auto px-10 py-4 lg:py-5 bg-white hover:bg-slate-200 text-slate-900 font-medium rounded-full shadow-[0_4px_14px_rgba(255,255,255,0.1)] hover:shadow-[0_10px_40px_-10px_rgba(255,255,255,0.2)] transition-all duration-300 text-lg flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-10 py-4 lg:py-5 rounded-xl text-lg font-medium transition-all duration-500 shadow-xl text-white bg-black border border-white/[0.1] hover:bg-gray-300 hover:text-black shadow-black/20 hover:shadow-white/10 flex items-center justify-center gap-2 group"
               >
-                Request Access <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                Contact <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
           
             </div>
