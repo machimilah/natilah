@@ -7,11 +7,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import HeroSection from '../components/HeroSection';
 import QubitAnimation from '../components/QubitAnimation';
+import { useNews } from '../hooks/useData';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+
 const HomePage = () => {
   const containerRef = useRef(null);
+  const { data: newsData, loading: newsLoading } = useNews();
 
   useGSAP(() => {
     // Subtly parallaxing background shapes
@@ -190,18 +193,24 @@ const HomePage = () => {
         <section className="relative z-10 py-24 md:py-32 bg-black border-b border-white/[0.06]">
           <div className="max-w-[1200px] mx-auto px-6 md:px-12 mb-16 md:mb-24 reveal-up">
             <h2 className="text-4xl md:text-5xl font-light text-white leading-[1.1] tracking-tight mb-10 text-center">Latest News</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {require('../data/mockData').newsData.slice(0,2).map(news => (
-                <div key={news.id} className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 flex flex-col h-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                  <div className="mb-3 text-xs text-slate-400 uppercase tracking-widest">{news.date}</div>
-                  <h3 className="text-2xl font-semibold text-white mb-3">{news.title}</h3>
-                  <p className="text-slate-300 font-light mb-6">{news.excerpt}</p>
-                  <Link to={news.linkUrl} className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-slate-300 transition-colors group">
-                    Read more <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              ))}
-            </div>
+            {newsLoading ? (
+              <div className="flex justify-center items-center h-32 text-slate-500">
+                <span className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white animate-spin" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                {newsData && newsData.slice(0,2).map(news => (
+                  <div key={news.id} className="bg-black rounded-2xl p-8 flex flex-col h-full">
+                    <div className="mb-3 text-xs text-slate-400 uppercase tracking-widest">{news.date}</div>
+                    <h3 className="text-2xl font-semibold text-white mb-3">{news.title}</h3>
+                    <p className="text-slate-300 font-light mb-6">{news.excerpt}</p>
+                    <Link to={news.linkUrl || `/news/${news.id}`} className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-slate-300 transition-colors group">
+                      Read more <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

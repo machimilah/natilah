@@ -23,10 +23,8 @@ const NewsPage = () => {
         <meta name="description" content="The latest breakthroughs, research, and platform updates from the architects at Natilah." />
       </Helmet>
 
+
       <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden">
-        <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute top-[30%] right-[-20%] w-[70vw] h-[70vw] bg-gradient-to-tr from-slate-700/15 to-slate-800/10 blur-[130px] rounded-full" />
-        </div>
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-8 lg:px-12 relative z-10">
           <div className="reveal-up max-w-4xl mb-24 md:mb-32">
@@ -46,18 +44,18 @@ const NewsPage = () => {
           ) : (
             <div className="news-grid grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 mb-32">
               {newsData?.map((item, idx) => (
-                <div key={idx} className="news-card group flex flex-col p-10 bg-white/[0.03] rounded-3xl border border-white/[0.06] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.3)] hover:shadow-xl hover:bg-white/[0.05] transition-all duration-500">
+                <div key={idx} className="news-card flex flex-col p-10 bg-black rounded-3xl">
                   <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold uppercase tracking-widest mb-6">
                     <Calendar size={14} className="text-slate-600" />
                     {item.date ? (isNaN(new Date(item.date).getTime()) ? item.date : new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })) : 'No Date'}
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-light text-white mb-6 leading-[1.2] group-hover:text-slate-300 transition-colors duration-300">
+                  <h3 className="text-2xl md:text-3xl font-light text-white mb-6 leading-[1.2]">
                     {item.title}
                   </h3>
                   <p className="text-slate-400 font-light leading-relaxed text-lg mb-10 flex-grow">
                     {item.excerpt}
                   </p>
-                  <Link to={`/news/${item.id}`} className="inline-flex items-center gap-2 font-medium text-slate-300 hover:gap-4 transition-all duration-300 border-b border-white/[0.1] pb-1 self-start hover:text-white hover:border-white/30">
+                  <Link to={`/news/${item.id}`} className="inline-flex items-center gap-2 font-medium text-slate-300 border-b border-white/[0.1] pb-1 self-start">
                     Read Publication <ArrowRight size={16} />
                   </Link>
                 </div>

@@ -32,13 +32,8 @@ const AboutPage = () => {
         <meta name="description" content="Discover the mission, philosophy, and engineers behind Natilah's frontier computing platform." />
       </Helmet>
 
-      <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden">
 
-        {/* Soft Background Orbs */}
-        <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="parallax-bg absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-br from-slate-700/20 to-slate-800/10 blur-[120px] rounded-full" />
-          <div className="parallax-bg absolute top-[40%] right-[-10%] w-[40vw] h-[40vw] bg-gradient-to-l from-slate-600/20 to-transparent blur-[100px] rounded-full" />
-        </div>
+      <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden">
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-8 lg:px-12 relative z-10">
           {/* Header */}
@@ -64,11 +59,11 @@ const AboutPage = () => {
                 <div
                   key={i}
                   className={
-                    `p-10 bg-black backdrop-blur shadow-[0_4px_20px_-10px_rgba(0,0,0,0.3)] transition-all duration-500 ` +
+                    `p-10 bg-black transition-all duration-500 ` +
                     (i !== arr.length - 1 ? ' md:border-r md:border-gray-800' : '')
                   }
                 >
-                  <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center mb-6">
+                    <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center mb-6">
                     <val.icon size={22} className="text-white" />
                   </div>
                   <h3 className="text-xl font-medium text-white mb-4">{val.title}</h3>
@@ -91,7 +86,7 @@ const AboutPage = () => {
                 <p className="text-slate-400">Combobulating....</p>
               ) : (
                 teamData?.map((member, i) => (
-                  <div key={i} className="team-card bg-black rounded-xl p-8 border border-gray-600 shadow-sm hover:shadow-xl hover:bg-white/[0.05] transition-all duration-500">
+                  <div key={i} className="team-card bg-black rounded-xl p-8 transition-all duration-500">
                     <div className="w-20 h-20 bg-black rounded-2xl mb-6 flex items-center justify-center border border-white/[0.06]">
                       <User size={28} className="text-white" />
                     </div>

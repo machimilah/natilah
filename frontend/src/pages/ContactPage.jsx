@@ -86,13 +86,8 @@ const ContactPage = () => {
         <meta name="description" content="Reach out to the architects reshaping High Performance Computing. Schedule a demonstration or consult with our engineers." />
       </Helmet>
 
-      <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden flex flex-col justify-center">
 
-        {/* Abstract Geometry */}
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="orb-float absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-slate-700/20 to-slate-600/15 blur-[100px] rounded-full opacity-60" />
-          <div className="absolute bottom-[0%] left-[-10%] w-[60vw] h-[60vw] bg-slate-800/15 blur-[120px] rounded-full opacity-50" />
-        </div>
+      <div ref={containerRef} className="relative bg-black text-slate-200 font-sans min-h-screen pt-32 pb-48 overflow-hidden flex flex-col justify-center">
 
         <div className="max-w-[800px] w-full mx-auto px-6 relative z-10 flex-grow flex flex-col items-center mt-10">
           
@@ -106,8 +101,8 @@ const ContactPage = () => {
           </div>
 
           {/* Form Box */}
-          <div className="w-full backdrop-blur-3xl rounded-[2.5rem] p-10 md:p-14 border border-white/[0.06] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.4)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gradient-to-bl from-white/[0.03] to-transparent pointer-events-none" />
+
+          <div className="w-full bg-black rounded-[2.5rem] p-10 md:p-14 border border-white/[0.06] relative overflow-hidden">
 
             <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
               <div className="form-input-group">
