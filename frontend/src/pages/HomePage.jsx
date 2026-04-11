@@ -130,7 +130,6 @@ const HomePage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
               {/* Left Column: Title */}
               <div>
-                <p className="text-slate-400 font-medium tracking-widest uppercase mb-6 md:mb-8 text-sm">Quantum Thinking</p>
                 <h2 className="text-4xl md:text-5xl font-light text-white leading-[1.1] tracking-tight">
                   Designing the nervous system for AI.
                 </h2>
@@ -168,15 +167,13 @@ const HomePage = () => {
           </div>
         </section>
 
+
         {/* 7. Final CTA */}
         <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 bg-black text-center">
           <div className="max-w-[1000px] mx-auto reveal-up">
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white tracking-tight leading-[1.05] mb-10">
-              Built on the <br className="hidden sm:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">cutting edge.</span>
+              Got any <br className="hidden sm:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">Questions?</span>
             </h2>
-            <p className="text-xl text-slate-300 font-light mb-14 max-w-2xl mx-auto leading-relaxed">
-              Step into a new era of performance. Join the researchers, enterprise scaling teams, and visionaries optimizing with Natilah.
-            </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
@@ -185,7 +182,25 @@ const HomePage = () => {
               >
                 Contact <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-          
+            </div>
+          </div>
+        </section>
+
+        {/* 7.5 News Section */}
+        <section className="relative z-10 py-24 md:py-32 bg-black border-b border-white/[0.06]">
+          <div className="max-w-[1200px] mx-auto px-6 md:px-12 mb-16 md:mb-24 reveal-up">
+            <h2 className="text-4xl md:text-5xl font-light text-white leading-[1.1] tracking-tight mb-10 text-center">Latest News</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {require('../data/mockData').newsData.slice(0,2).map(news => (
+                <div key={news.id} className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 flex flex-col h-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                  <div className="mb-3 text-xs text-slate-400 uppercase tracking-widest">{news.date}</div>
+                  <h3 className="text-2xl font-semibold text-white mb-3">{news.title}</h3>
+                  <p className="text-slate-300 font-light mb-6">{news.excerpt}</p>
+                  <Link to={news.linkUrl} className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-slate-300 transition-colors group">
+                    Read more <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </section>

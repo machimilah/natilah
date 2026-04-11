@@ -15,6 +15,10 @@ const GLTFTextModel = () => {
   useEffect(() => {
     if (!mountRef.current) return;
 
+    // Set initial style for animation
+    mountRef.current.style.opacity = 0;
+    mountRef.current.style.transform = 'translateY(8px)';
+
     // Get Initial Size
     const getContainerSize = () => {
       const width = mountRef.current.clientWidth;
@@ -130,6 +134,7 @@ const GLTFTextModel = () => {
       // wrapper.rotation.x = Math.PI / 2;
     });
 
+
     // Add continuous render loop WITHOUT constant rotation wobble
     let animationFrameId;
     const animate = () => {
@@ -137,6 +142,19 @@ const GLTFTextModel = () => {
       renderer.render(scene, camera);
     };
     animate();
+
+    // Animate in with GSAP immediately
+    gsap.to(mountRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      overwrite: true,
+      onStart: () => {
+        // Animate from translateY(8px) to 0
+        gsap.set(mountRef.current, { y: 8 });
+      }
+    });
 
     const handleResize = () => {
       if (!mountRef.current) return;
@@ -160,6 +178,11 @@ const GLTFTextModel = () => {
         currentMount.removeChild(renderer.domElement);
       }
       renderer.dispose();
+      // Reset style if remounted
+      if (mountRef.current) {
+        mountRef.current.style.opacity = '';
+        mountRef.current.style.transform = '';
+      }
     };
   }, []);
 
@@ -206,6 +229,7 @@ const HeroSection = () => {
           muted
           loop
           playsInline
+          preload="auto"
           src="/videos/Quasar2.mp4"
         />
 
