@@ -179,9 +179,9 @@ const GLTFTextModel = () => {
       }
       renderer.dispose();
       // Reset style if remounted
-      if (mountRef.current) {
-        mountRef.current.style.opacity = '';
-        mountRef.current.style.transform = '';
+      if (currentMount) {
+        currentMount.style.opacity = '';
+        currentMount.style.transform = '';
       }
     };
   }, []);
