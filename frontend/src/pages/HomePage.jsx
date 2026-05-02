@@ -101,7 +101,7 @@ const HomePage = () => {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-white bg-[length:200%_auto] animate-gradient-move">Computation</span>
                 </h2>
                 <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed">
-                  We believe the future of computation is Quantum.
+                  The future is Quantum.
                 </p>
                 <div className="mt-10">
                   <Link
@@ -134,7 +134,7 @@ const HomePage = () => {
               {/* Left Column: Title */}
               <div>
                 <h2 className="text-4xl md:text-5xl font-light text-white leading-[1.1] tracking-tight">
-                  Designing the nervous system for AI.
+                  Designing the bridge between AI and Quantum Computing
                 </h2>
               </div>
 
@@ -142,10 +142,10 @@ const HomePage = () => {
               <div className="flex flex-col h-full justify-between">
                 <div className="space-y-6 text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
                   <p>
-                    Natilah plans to be the software and foundation company for the advancement of computation.
+                    Natilah plans to be the software and foundation company for the advancement of quantum and HPCs.
                   </p>
                   <p>
-                    Both in classical and quantum computing, we are building the software that will orchestrate the next generation of hardware, enabling researchers and enterprises to push the boundaries of what's possible with AI and scientific discovery.
+                    We are building the software that will integrate with the next generation of hardware, enabling researchers and enterprises to push the boundaries of what's possible with AI and scientific discovery.
                   </p>
                 </div>
                 <div className="mt-12 lg:mt-16">
@@ -162,8 +162,8 @@ const HomePage = () => {
           <div className="max-w-[1024px] mx-auto px-6 md:px-12 mt-12">
             <div className="w-full relative shadow-2xl bg-black reveal-up overflow-hidden aspect-[2.35/1]">
               <img
-                src="/images/brianpenny-ai-generated-8533600.jpg"
-                alt="Nervous System of AI"
+                src="/images/BRIDGE.png"
+                alt="Bridge between AI and Quantum Computing"
                 className="vision-image w-full h-full object-cover"
               />
             </div>
@@ -199,7 +199,7 @@ const HomePage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                {newsData && newsData.slice(0,2).map(news => (
+                {newsData && newsData.slice(0, 2).map(news => (
                   <div key={news.id} className="bg-black rounded-2xl p-8 flex flex-col h-full">
                     <div className="mb-3 text-xs text-slate-400 uppercase tracking-widest">{news.date}</div>
                     <h3 className="text-2xl font-semibold text-white mb-3">{news.title}</h3>

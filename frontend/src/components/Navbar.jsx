@@ -7,13 +7,31 @@ const Navbar = ({ links }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  const [showLogo, setShowLogo] = useState(location.pathname !== '/');
+  const locationPath = location.pathname;
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      // Show logo on scroll or if not on home page
+      if (locationPath === '/') {
+        setShowLogo(window.scrollY > 400);
+      } else {
+        setShowLogo(true);
+      }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [locationPath]);
+
+  // Handle logo visibility when switching pages
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setShowLogo(true);
+    } else if (window.scrollY <= 400) {
+      setShowLogo(false);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -37,12 +55,14 @@ const Navbar = ({ links }) => {
           <div className="flex justify-start flex-1">
             <Link
               to="/"
-              className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0"
+              className={`transition-all duration-700 flex items-center flex-shrink-0 ${
+                showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+              }`}
             >
               <img
-                src="/images/natilahlonglogobg.png"
+                src="/images/natilah_white_transparent.png"
                 alt="Natilah Technologies"
-                className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
+                className="h-10 md:h-12 lg:h-16 w-auto object-contain"
               />
             </Link>
           </div>
@@ -81,13 +101,15 @@ const Navbar = ({ links }) => {
           {/* Logo */}
           <Link
             to="/"
-            className="hover:opacity-80 transition-opacity duration-300 flex items-center flex-shrink-0 lg:mr-12"
+            className={`transition-all duration-700 flex items-center flex-shrink-0 lg:mr-12 ${
+              showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+            }`}
             style={{ position: 'absolute', left: 0 }}
           >
             <img
-              src="/images/natilahlonglogobg.png"
+              src="/images/natilah_white_transparent.png"
               alt="Natilah Technologies"
-              className="h-16 md:h-20 lg:h-28 w-auto object-contain mt-1 lg:mt-3 brightness-0 invert"
+              className="h-12 md:h-14 w-auto object-contain"
             />
           </Link>
 

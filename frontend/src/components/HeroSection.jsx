@@ -1,195 +1,147 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowDown, ChartArea, ChartPie, ChartPieIcon, Clock1, Layers, Play } from 'lucide-react';
+import { ArrowRight, Search, Sparkles } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
 
 gsap.registerPlugin(useGSAP);
 
-const GLTFTextModel = () => {
-  const mountRef = useRef(null);
+function hexToRgb(hex) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return m
+    ? { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) }
+    : { r: 0, g: 0, b: 255 };
+}
+
+const HeroWaves = ({ accent = "#3B82F6" }) => {
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: -9999, y: -9999, active: false });
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let rafId = 0;
+    let width = 0;
+    let height = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Set initial style for animation
-    mountRef.current.style.opacity = 0;
-    mountRef.current.style.transform = 'translateY(8px)';
-
-    // Get Initial Size
-    const getContainerSize = () => {
-      const width = mountRef.current.clientWidth;
-      const height = mountRef.current.clientHeight || 400; 
-      return { width, height };
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    let { width, height } = getContainerSize();
+    resize();
 
-    // Scene Setup
-    const scene = new THREE.Scene();
-    
-    // Camera Setup
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    
-    // Helper to calculate camera distance based on screen width to prevent clipping
-    const getCameraZ = (vw) => {
-      if (vw < 640) return 30; // Mobile: pull way back so it fits
-      if (vw < 1024) return 20; // Tablet: slightly pulled back
-      return 15; // Desktop: original distance
+    const onResize = () => resize();
+    window.addEventListener("resize", onResize);
+
+    const onMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (x > -80 && x < rect.width + 80 && y > -80 && y < rect.height + 80) {
+        mouseRef.current.x = x;
+        mouseRef.current.y = y;
+        mouseRef.current.active = true;
+      } else {
+        mouseRef.current.active = false;
+      }
     };
-    camera.position.set(0, 0, getCameraZ(width));
+    const onLeave = () => {
+      mouseRef.current.active = false;
+    };
 
-    // Renderer Setup
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
-    mountRef.current.appendChild(renderer.domElement);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerleave", onLeave, { passive: true });
 
-    // Render initially
-    renderer.setClearColor(0x000000, 0); // Transparent background
+    const spacing = 24;
+    const baseDot = 1.4;
+    const repelRadius = 180;
+    const repelStrength = 42;
+    const accentRgb = hexToRgb(accent);
 
-    // Initialize RectAreaLight for the bottom panel effect
-    RectAreaLightUniformsLib.init();
+    const start = performance.now();
 
-    // Lighting (crucial for silver material reflections)
-    // Raised ambient slightly so it's not "too dark" globally
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const render = () => {
+      const t = (performance.now() - start) / 1000;
+      ctx.clearRect(0, 0, width, height);
 
-    // Massive Panel Light shining up from the bottom (width 40 to cover all text, height 10)
-    // This creates a broad, glowing white/silver reflection pool across the bottom geometry
-    const bottomPanelLight = new THREE.RectAreaLight(0xffffff, 15.0, 40, 10);
-    bottomPanelLight.position.set(0, -6, 2); // Positioned low and slightly forward
-    bottomPanelLight.lookAt(0, 0, 0); // Pointed directly up at the center of the text
-    scene.add(bottomPanelLight);
+      const cx = mouseRef.current.x;
+      const cy = mouseRef.current.y;
+      const active = mouseRef.current.active;
 
-    // Keep a subtle front fill so the centers aren't entirely empty, but bumped slightly
-    const frontLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    frontLight.position.set(0, 0, 15);
-    scene.add(frontLight);
-    
-    // Far edge Rim lights to define the extreme left/right bounds (but not the center faces)
-    const leftRim = new THREE.DirectionalLight(0xffffff, 5.0);
-    leftRim.position.set(-20, 0, -2);
-    scene.add(leftRim);
-    
-    const rightRim = new THREE.DirectionalLight(0xffffff, 5.0);
-    rightRim.position.set(20, 0, -2);
-    scene.add(rightRim);
+      for (let y = spacing / 2; y < height; y += spacing) {
+        for (let x = spacing / 2; x < width; x += spacing) {
+          const wave =
+            Math.sin(x * 0.012 + t * 1.15) * 10 +
+            Math.cos(y * 0.016 + t * 0.75) * 6;
 
-    // The Realistic Silver Material (Brightened up)
-    const silverMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xa9b0bd,           // Brighter silver base color to fix "too dark"
-      metalness: 1.0,            // 100% metal
-      roughness: 0.15,           // Slightly softer roughness to spread the bottom panel light beautifully
-      clearcoat: 1.0,            // Glossy protective layer over it
-      clearcoatRoughness: 0.05,  // Slight blur on the clearcoat
-      reflectivity: 1.0          // Maximum light reflection
-    });
+          let dx = 0;
+          let dy = 0;
+          let nearness = 0;
+          if (active) {
+            const diffX = x - cx;
+            const diffY = y - cy;
+            const dist = Math.hypot(diffX, diffY);
+            if (dist < repelRadius) {
+              const fall = 1 - dist / repelRadius;
+              const force = fall * fall * repelStrength;
+              const inv = 1 / Math.max(dist, 0.001);
+              dx = diffX * inv * force;
+              dy = diffY * inv * force;
+              nearness = fall;
+            }
+          }
 
-    let modelGroup;
-    let wrapper;
-    const loader = new GLTFLoader();
-    
-    // Load the provided GLTF model
-    loader.load('/images/model.gltf', (gltf) => {
-      modelGroup = gltf.scene;
-      
-      // Create a wrapper group for safe scaling and rotation
-      wrapper = new THREE.Group();
-      scene.add(wrapper);
+          const px = x + dx;
+          const py = y + wave + dy;
+          const r = baseDot + nearness * 2.8;
 
-      // Apply the silver material to all meshes in the model
-      modelGroup.traverse((child) => {
-        if (child.isMesh) {
-          child.material = silverMaterial;
+          if (nearness > 0) {
+            const a = 0.35 + nearness * 0.65;
+            ctx.fillStyle = `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, ${a})`;
+          } else {
+            const vertical = y / height;
+            const base = 0.22 + (1 - vertical) * 0.16 + (wave + 15) / 60 * 0.14;
+            // Using white for base dots in dark mode
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.14, Math.min(0.5, base))})`;
+          }
+
+          ctx.beginPath();
+          ctx.arc(px, py, r, 0, Math.PI * 2);
+          ctx.fill();
         }
-      });
-
-      // Step 1: Center the model using its exact bounding box
-      const box = new THREE.Box3().setFromObject(modelGroup);
-      const center = new THREE.Vector3();
-      box.getCenter(center);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-      
-      // Shift the model itself backward by its bounds center so its true center rests at (0, 0, 0)
-      modelGroup.position.sub(center);
-      wrapper.add(modelGroup);
-
-      // Step 2: Scale the wrapper so the word "Quasar" fits visually in the container
-      // Make it noticeably bigger as requested
-      const targetWidth = 30; 
-      const scale = targetWidth / Math.max(size.x, 1); // fallback to 1 to avoid div zero
-      wrapper.scale.set(scale, scale, scale);
-
-      // Move it down slightly so it's closer to the text below
-      wrapper.position.y -= 1.5;
-
-      // If the model was created flat on the ground (XZ plane), uncomment the following line to stand it up.
-      // Often, GLTFs map Z up or Y up differently:
-      // wrapper.rotation.x = Math.PI / 2;
-    });
-
-
-    // Add continuous render loop WITHOUT constant rotation wobble
-    let animationFrameId;
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    // Animate in with GSAP immediately
-    gsap.to(mountRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-      overwrite: true,
-      onStart: () => {
-        // Animate from translateY(8px) to 0
-        gsap.set(mountRef.current, { y: 8 });
       }
-    });
 
-    const handleResize = () => {
-      if (!mountRef.current) return;
-      const { width, height } = getContainerSize();
-      camera.aspect = width / height;
-      camera.position.z = getCameraZ(width);
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-      // Optional: adjust lighting or scales specifically for mobile here if needed
+      if (active) {
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 110);
+        g.addColorStop(0, `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.08)`);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(cx - 120, cy - 120, 240, 240);
+      }
+
+      rafId = requestAnimationFrame(render);
     };
-    
-    window.addEventListener('resize', handleResize);
+    rafId = requestAnimationFrame(render);
 
-    const currentMount = mountRef.current;
-
-    // Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-      if (currentMount && renderer.domElement) {
-        currentMount.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-      // Reset style if remounted
-      if (currentMount) {
-        currentMount.style.opacity = '';
-        currentMount.style.transform = '';
-      }
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerleave", onLeave);
     };
-  }, []);
+  }, [accent]);
 
   return (
-    <div 
-      ref={mountRef} 
-      className="flex justify-center items-center w-full max-w-[1200px] h-[200px] sm:h-[300px] md:h-[400px] mx-auto pointer-events-none"
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full pointer-events-none select-none z-0"
     />
   );
 };
@@ -197,88 +149,68 @@ const GLTFTextModel = () => {
 const HeroSection = () => {
   const containerRef = useRef(null);
 
-  useGSAP((context, contextSafe) => {
-    const tl = gsap.timeline();
-
-    // Parallax background elements
-    gsap.to('.hero-bg-video', {
-      yPercent: 20,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      }
+  useGSAP(() => {
+    gsap.from('.hero-elem', {
+      y: 30,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.1,
+      ease: 'power3.out',
+      delay: 0.2
     });
-
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[90vh] flex flex-col justify-center overflow-hidden bg-black pt-24 md:pt-26 pb-20 md:pb-40"
+      className="relative w-full min-h-[60vh] flex flex-col justify-center bg-[#050505] overflow-hidden py-16"
     >
-      {/* Ambient background styling */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Background Dots Canvas */}
+      <HeroWaves accent="#3B82F6" />
 
-        {/* Soft, blended video background for motion */}
-        <video
-          className="hero-bg-video absolute top-0 left-0 w-full h-[120%] object-cover mix-blend-screen opacity-60"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          src="/videos/Quasar2.mp4"
-        />
-
-        {/* Sophisticated gradient blurs */}
-        <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vh] max-w-[800px] bg-gradient-to-r from-slate-700/30 to-slate-800/20 rounded-full blur-[100px]" />
-        <div className="absolute top-[20%] -right-[20%] w-[80vw] h-[80vh] max-w-[1000px] bg-gradient-to-l from-slate-600/20 to-transparent rounded-full blur-[140px]" />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black z-0" />
-      </div>
+      {/* Edge Fades (Dots disappearance) */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#050505] to-transparent z-[1] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050505] to-transparent z-[1] pointer-events-none" />
 
       {/* Main Foreground Content */}
-      <div className="relative z-10 w-full px-6 md:px-8 lg:px-12">
-        <div className="max-w-[1440px] mx-auto w-full">
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-24 xl:px-32 mx-auto max-w-[1600px] pointer-events-none">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 pt-4 md:pt-12">
 
-          {/* Main Copy */}
-          <div className="flex flex-col items-center text-center pt-16 md:pt-24 max-w-4xl mx-auto">
-            
-            {/* Real GLTF 3D Body Representation */}
-            <div className="relative mb-2 flex justify-center w-full z-50">
-              <GLTFTextModel />
+          {/* Left Column: Text Content */}
+          <div className="flex flex-col items-start max-w-3xl pointer-events-auto">
+
+
+            {/* Main Headline (Logo) */}
+            <div className="hero-elem mb-8">
+              <img 
+                src="/images/natilahonlywhite.png" 
+                alt="Natilah Logo" 
+                className="h-12 md:h-16 lg:h-20 w-auto object-contain" 
+              />
             </div>
 
-            <p className="hero-elem text-lg md:text-xl lg:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl mb-6 md:mb-8 mx-auto -mt-6">
-              The ultimate scheduler.
+            {/* Description */}
+            <p className="hero-elem text-base md:text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mb-12">
+              Building the bridge between AI and Quantum Computing.
             </p>
 
-            <div className="hero-elem flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-              <Link
-                to="/products/quasar"
-                className="group relative inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-transparent border border-white text-white font-medium rounded-full overflow-hidden hover:bg-white/5 shadow-[0_4px_20px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_-5px_rgba(255,255,255,0.1)] transition-all duration-500 text-lg"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Know More
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-            </div>
+
           </div>
 
         </div>
       </div>
 
-      {/* Downward Scroll Indicator Arrow */}
-      <div className="absolute bottom-8 left-6 md:left-12 z-20 opacity-50 hover:opacity-100 transition-opacity duration-500">
-        <div>
-          <ArrowDown className="text-white w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
-        </div>
+      {/* Massive Emerging Logo */}
+      <div className="hidden md:block absolute -bottom-[40%] right-[10%] w-[50vw] max-w-[1000px] h-auto pointer-events-none z-[1] opacity-100 brightness-[0.6]">
+        <img
+          src="/images/logo_transparent.png"
+          alt="Natilah Logo"
+          className="w-full h-auto drop-shadow-[0_0_120px_rgba(59,130,246,0.15)]"
+        />
       </div>
+
+      {/* Bottom Divider Line */}
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-white/10 z-20" />
     </section>
   );
 };
